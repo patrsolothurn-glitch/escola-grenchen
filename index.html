@@ -2,7 +2,7 @@
 <html lang="pt">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#1a237e">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -12,7 +12,51 @@
 <title>Escola Grenchen Sek P</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#eef2f7;min-height:100vh;color:#111;max-width:520px;margin:0 auto}
+html{-webkit-text-size-adjust:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#eef2f7;min-height:100vh;min-height:100dvh;color:#111;width:100%;max-width:520px;margin:0 auto;overflow-x:hidden}
+
+/* ── RESPONSIVE: small phones (< 360px) ── */
+@media (max-width:359px){
+  .login-school{font-size:17px}
+  .lbtn-name{font-size:14px}
+  .fbtn{font-size:11px;padding:4px 9px}
+  .header-name{font-size:13px}
+  .day-name{font-size:14px}
+  .s-label{font-size:10px}
+  .dpill{font-size:11px;padding:3px 8px}
+}
+
+/* ── RESPONSIVE: tablets and up (>= 600px) ── */
+@media (min-width:600px){
+  body{max-width:680px}
+  .login-body{padding:40px 40px 100px}
+  .login-btns{max-width:420px}
+  .days{padding:0 20px 90px}
+  .week-nav{margin:16px 20px 10px;padding:12px 20px}
+  .my-banner{margin:0 20px 10px}
+  .filter-bar{padding:0 20px 10px}
+  .app-header{padding:14px 20px 12px}
+  .day-body{padding:6px 20px 14px}
+  .slot-row{padding:8px 0}
+}
+
+/* ── RESPONSIVE: large tablets / desktop browser (>= 900px) ── */
+@media (min-width:900px){
+  body{max-width:760px}
+}
+
+/* ── Landscape phones: keep header compact ── */
+@media (max-height:420px) and (orientation:landscape){
+  .app-header{padding:8px 16px}
+  .login-body{padding:12px 20px 80px}
+  .login-logo{font-size:32px;margin-bottom:4px}
+  .login-divider{margin:10px 0}
+}
+
+/* ── Safe area for notched phones ── */
+.app-header{padding-top:max(12px, env(safe-area-inset-top))}
+.install-bar{padding-bottom:max(10px, env(safe-area-inset-bottom))}
+body{padding-bottom:env(safe-area-inset-bottom)}
 
 /* ── ECRÃ DE LOGIN ── */
 .screen{min-height:100vh;display:flex;flex-direction:column}
