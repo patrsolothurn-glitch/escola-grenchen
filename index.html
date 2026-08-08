@@ -107,7 +107,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       <button class="back-btn" onclick="history.back()">‹</button>
       <div class="header-text">
         <h1 id="app-title">🏫 Escola Grenchen Sek P</h1>
-        <p id="app-sub">Schulstrasse 25, 2540 Grenchen</p>
+        <p id="app-sub">Grenchen</p>
       </div>
       <button class="user-pill" id="user-pill" onclick="changeUser()">👤 —</button>
     </div>
@@ -136,7 +136,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
 </div>
 
-<div class="footer-bar">🏫 Escola Grenchen Sek P 1p 26/27 · Grenchen Nord Schule ↔ Selzach</div>
+<div class="footer-bar" id="footer-bar">🏫 Escola Grenchen Sek P 1p 26/27</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
@@ -170,7 +170,11 @@ async function init(){
   if(cfg){
     const m={};cfg.forEach(r=>{m[r.key]=r.value;});
     if(m.escola_nome) document.getElementById('app-title').textContent='🏫 '+m.escola_nome;
-    if(m.escola_morada) document.getElementById('app-sub').textContent=m.escola_morada;
+    if(m.escola_morada) {
+      document.getElementById('app-sub').textContent=m.escola_morada;
+      const fb = document.getElementById('footer-bar');
+      if(fb) fb.textContent = '📍 ' + m.escola_morada;
+    }
   }
 
   // Carregar condutores autorizados
