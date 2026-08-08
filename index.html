@@ -173,13 +173,16 @@ body{padding-bottom:env(safe-area-inset-bottom)}
 
 <!-- APP SCREEN -->
 <div id="app-screen" style="display:none">
-  <div class="app-header">
+  <div class="app-header" style="position:relative">
+    <div id="lang-dropdown" style="display:none;position:absolute;top:100%;right:16px;background:#fff;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.2);padding:6px;z-index:40;margin-top:4px">
+    </div>
     <div class="app-header-row">
       <button class="back-btn" onclick="history.back()">‹</button>
       <div class="header-info">
         <div class="header-name" id="app-name">🏫 Escola Grenchen Sek P 1p 26/27</div>
         <div class="header-addr" id="app-addr">Schulstrasse 25, 2540 Grenchen</div>
       </div>
+      <button class="user-btn" id="lang-header-btn" onclick="toggleLangMenu()" style="padding:5px 8px" title="Language">🌐</button>
       <button class="user-btn" id="install-header-btn" onclick="doInstall()" style="padding:5px 8px;display:none" title="Instalar app">📲</button>
       <button class="user-btn" onclick="printWeek()" style="padding:5px 8px" title="Imprimir">🖨️</button>
       <button class="user-btn" id="user-btn" onclick="changeUser()">👤 —</button>
@@ -635,6 +638,35 @@ function printWeek(){
   w.document.write(html);
   w.document.close();
   setTimeout(()=>w.print(),600);
+}
+
+function toggleLangMenu(){
+  const dd=document.getElementById('lang-dropdown');
+  if(dd.style.display==='block'){ dd.style.display='none'; return; }
+  dd.innerHTML='';
+  Object.entries(T).forEach(([l,v])=>{
+    const b=document.createElement('button');
+    b.textContent=v.flag+' '+l;
+    b.style.cssText='display:flex;align-items:center;gap:8px;width:100%;padding:9px 14px;border:none;background:'+(l===lang?'#e8eaf6':'transparent')+';border-radius:8px;font-size:14px;font-weight:'+(l===lang?'800':'500')+';color:#333;cursor:pointer;text-align:left;white-space:nowrap';
+    b.onclick=()=>{ appSetLang(l); dd.style.display='none'; };
+    dd.appendChild(b);
+  });
+  dd.style.display='block';
+}
+document.addEventListener('click', e=>{
+  const dd=document.getElementById('lang-dropdown');
+  const btn=document.getElementById('lang-header-btn');
+  if(dd && dd.style.display==='block' && !dd.contains(e.target) && e.target!==btn){
+    dd.style.display='none';
+  }
+});
+function appSetLang(l){
+  setLang(l);
+  // Re-render everything with new language
+  document.getElementById('week-badge').textContent=isCurWeek()?t.semana_atual:t.semana;
+  buildFilterBar();
+  renderBanner();
+  renderDays();
 }
 
 init();
