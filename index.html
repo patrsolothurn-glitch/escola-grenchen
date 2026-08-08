@@ -554,7 +554,7 @@ function slotHtml(day,slot,label,defaultTime){
     <span class="s-icon">🚗</span>
     <span class="s-label">${label} <span class="s-time${isEx?' s-exc':''}">${hora}</span></span>
     ${nome
-      ? `${isOV?'<span style="font-size:16px">🚌</span>':''}<span class="dpill" style="background:${col}18;color:${col}">${nome}</span>${sc.enea?'<span class="epill">👦 Enea</span>':''}`
+      ? `${isOV?'<span style="font-size:16px">🚌</span>':''}<span class="dpill" style="background:${col}18;color:${col}">${nome}</span>${sc.lucas_vai!==false?'<span class="epill" style="color:#1565c0;background:#e3f2fd">👦 Lucas</span>':''}${sc.enea?'<span class="epill">👦 Enea</span>':''}`
       : '<span class="no-driver">—</span>'}
   </div>`;
 }
