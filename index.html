@@ -136,6 +136,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         <div class="header-name" id="app-name">🏫 Escola Grenchen Sek P 1p 26/27</div>
         <div class="header-addr" id="app-addr">Schulstrasse 25, 2540 Grenchen</div>
       </div>
+      <button class="user-btn" onclick="printWeek()" style="padding:5px 8px" title="Imprimir">🖨️</button>
       <button class="user-btn" id="user-btn" onclick="changeUser()">👤 —</button>
     </div>
   </div>
@@ -512,6 +513,56 @@ function slotHtml(day,slot,label,defaultTime){
       ? `${isOV?'<span style="font-size:16px">🚌</span>':''}<span class="dpill" style="background:${col}18;color:${col}">${nome}</span>${sc.enea?'<span class="epill">👦 Enea</span>':''}`
       : '<span class="no-driver">—</span>'}
   </div>`;
+}
+
+function printWeek(){
+  const rows = DAYS_BASE.map((day,i)=>{
+    function cell(slot){
+      const k=day.key+':'+slot; const sc=schedule[k]||{};
+      const col=sc.condutor?(driverColor(sc.condutor)||'#333'):'#bbb';
+      const hora=sc.hora_override;
+      const isOV=sc.condutor==='ÖV';
+      return '<td style="border:1px solid #ccc;padding:8px 10px;background:#fff;vertical-align:top">'
+        +'<div style="font-weight:800;font-size:13px;color:'+col+'">'+(isOV?'🚌 ':'')+(sc.condutor||'—')+'</div>'
+        +(hora?'<div style="font-size:10px;color:#e65100;margin-top:2px">⏰ '+hora+'</div>':'')
+        +(sc.enea?'<div style="font-size:10px;color:#7b1fa2;margin-top:3px">👦 Enea</div>':'')
+        +'</td>';
+    }
+    return '<tr><td style="border:1px solid #ccc;padding:8px;background:#e8eaf6;text-align:center;vertical-align:middle">'
+      +'<div style="font-weight:900;font-size:13px;color:#1a237e">'+t.days[i]+'</div>'
+      +'<div style="font-size:10px;color:#777;margin-top:2px">'+fmt(addDays(weekStart,i))+'</div></td>'
+      +cell('leva_manha')+cell('busca_almoco')
+      +(day.tarde?cell('leva_tarde')+cell('busca_fim')
+        :'<td colspan="2" style="border:1px solid #ccc;background:#f5f5f5;text-align:center;color:#ccc;vertical-align:middle">—</td>')
+      +'</tr>';
+  }).join('');
+
+  const schoolName=document.getElementById('app-name').textContent;
+  const schoolAddr=document.getElementById('app-addr').textContent;
+
+  const html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>'+schoolName+'</title>'
+    +'<style>@page{size:A4 landscape;margin:12mm}body{font-family:Arial,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}'
+    +'.page{display:flex;flex-direction:column;height:183mm}table{width:100%;border-collapse:collapse;flex:1}'
+    +'th{color:#fff;padding:8px 6px;font-size:9.5px;text-transform:uppercase;border:1px solid rgba(255,255,255,.3);font-weight:800}'
+    +'#tbody tr{height:20%}</style></head><body>'
+    +'<div class="page"><div style="display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #1a237e;padding-bottom:8px;margin-bottom:9px">'
+    +'<div><div style="font-size:20px;font-weight:900;color:#1a237e">'+schoolName+'</div>'
+    +'<div style="font-size:9px;color:#777;margin-top:2px">'+schoolAddr+'</div></div>'
+    +'<div style="font-size:15px;font-weight:800;color:#1a237e">'+weekLbl()+'</div></div>'
+    +'<table><thead><tr>'
+    +'<th rowspan="2" style="background:#1a237e">Dia</th>'
+    +'<th colspan="2" style="background:#1565c0">'+t.manha+'</th>'
+    +'<th colspan="2" style="background:#bf360c">'+t.tarde+'</th></tr><tr>'
+    +'<th style="background:#1976d2">🚗 '+t.leva+' — 7:05</th><th style="background:#1976d2">🚗 '+t.busca+'</th>'
+    +'<th style="background:#d84315">🚗 '+t.leva+' — 13:05</th><th style="background:#d84315">🚗 '+t.busca+' — 16:55</th>'
+    +'</tr></thead><tbody id="tbody">'+rows+'</tbody></table>'
+    +'<div style="margin-top:7px;padding-top:6px;border-top:1px solid #ddd;font-size:9px;color:#777;display:flex;gap:14px">'
+    +'<span style="color:#7b1fa2">👦 Enea</span><span style="color:#e65100">⏰ Hora excepção</span></div></div></body></html>';
+
+  const w=window.open('','_blank');
+  w.document.write(html);
+  w.document.close();
+  setTimeout(()=>w.print(),600);
 }
 
 init();
