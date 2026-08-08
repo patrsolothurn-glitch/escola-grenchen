@@ -180,6 +180,7 @@ body{padding-bottom:env(safe-area-inset-bottom)}
         <div class="header-name" id="app-name">🏫 Escola Grenchen Sek P 1p 26/27</div>
         <div class="header-addr" id="app-addr">Schulstrasse 25, 2540 Grenchen</div>
       </div>
+      <button class="user-btn" id="install-header-btn" onclick="doInstall()" style="padding:5px 8px;display:none" title="Instalar app">📲</button>
       <button class="user-btn" onclick="printWeek()" style="padding:5px 8px" title="Imprimir">🖨️</button>
       <button class="user-btn" id="user-btn" onclick="changeUser()">👤 —</button>
     </div>
@@ -208,7 +209,7 @@ body{padding-bottom:env(safe-area-inset-bottom)}
   <span style="font-size:24px">📲</span>
   <span class="install-text" id="install-text">Instala esta app para acesso rápido!</span>
   <button class="install-btn" id="install-btn" onclick="doInstall()">Instalar</button>
-  <button class="install-close" onclick="document.getElementById('install-bar').style.display='none'">✕</button>
+  <button class="install-close" onclick="dismissInstall()">✕</button>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
@@ -295,14 +296,36 @@ let deferredInstall=null;
 // ── PWA INSTALL ───────────────────────────────────────────────────
 window.addEventListener('beforeinstallprompt', e=>{
   e.preventDefault(); deferredInstall=e;
-  const bar=document.getElementById('install-bar');
-  document.getElementById('install-text').textContent=t.install;
-  bar.style.display='flex';
+  // Só mostra o banner automático se ainda não foi dispensado nesta sessão
+  if(!sessionStorage.getItem('install_dismissed')){
+    const bar=document.getElementById('install-bar');
+    document.getElementById('install-text').textContent=t.install;
+    bar.style.display='flex';
+  }
+  // Botão persistente no header - sempre disponível, mesmo depois de dispensar
+  const hb=document.getElementById('install-header-btn');
+  if(hb) hb.style.display='flex';
 });
+window.addEventListener('appinstalled', ()=>{
+  const hb=document.getElementById('install-header-btn');
+  if(hb) hb.style.display='none';
+  document.getElementById('install-bar').style.display='none';
+});
+function dismissInstall(){
+  sessionStorage.setItem('install_dismissed','1');
+  document.getElementById('install-bar').style.display='none';
+}
 function doInstall(){
   if(!deferredInstall) return;
   deferredInstall.prompt();
-  deferredInstall.userChoice.then(()=>{ document.getElementById('install-bar').style.display='none'; });
+  deferredInstall.userChoice.then(choice=>{
+    document.getElementById('install-bar').style.display='none';
+    // Não escondemos o botão do header se recusou - fica disponível para tentar depois
+    if(choice.outcome==='accepted'){
+      const hb=document.getElementById('install-header-btn');
+      if(hb) hb.style.display='none';
+    }
+  });
 }
 
 // ── HELPERS ───────────────────────────────────────────────────────
