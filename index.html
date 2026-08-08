@@ -499,25 +499,59 @@ function renderBanner(){
     </div>`).join('');
 }
 
+let othersExpanded=false;
+
 function buildFilterBar(){
   const bar=document.getElementById('filter-bar');
   bar.innerHTML='';
+  bar.style.flexWrap='wrap';
+
+  // 1. Botão "Eu" (destacado, sempre visível)
+  const me=drivers.find(d=>d.nome===currentUser);
+  if(me){
+    const col=me.cor||'#27ae60';
+    const isMe=activeFilter===currentUser;
+    const meBtn=document.createElement('button');
+    meBtn.className='fbtn';
+    meBtn.style.cssText='border:2px solid '+col+';border-radius:20px;padding:7px 16px;font-size:13px;font-weight:800;cursor:pointer;flex-shrink:0;'
+      +(isMe?'background:'+col+';color:#fff':'background:'+col+'15;color:'+col);
+    meBtn.innerHTML=(me.nome==='ÖV'?'🚌 ':'👤 ')+'<b>'+me.nome+'</b>'+(isMe?'':'');
+    meBtn.onclick=()=>{ setFilter(currentUser,meBtn); buildFilterBar(); };
+    bar.appendChild(meBtn);
+  }
+
+  // 2. Botão "Todos"
   const todosBtn=document.createElement('button');
   todosBtn.className='fbtn'+(activeFilter===null?' active':'');
   todosBtn.textContent=t.todos;
+  todosBtn.style.flexShrink='0';
   if(activeFilter===null){todosBtn.style.background='#1a237e';todosBtn.style.color='#fff';}
-  todosBtn.onclick=()=>setFilter(null,todosBtn);
+  todosBtn.onclick=()=>{ setFilter(null,todosBtn); buildFilterBar(); };
   bar.appendChild(todosBtn);
-  drivers.forEach(d=>{
-    const btn=document.createElement('button');
-    btn.className='fbtn'+(d.nome===activeFilter?' active':'');
-    btn.textContent=d.nome==='ÖV'?'🚌 ÖV':d.nome;
-    btn.dataset.cor=d.cor||'#27ae60';
-    if(d.nome===activeFilter){btn.style.background=d.cor||'#27ae60';btn.style.color='#fff';}
-    else btn.style.borderColor=d.cor||'#27ae60';
-    btn.onclick=()=>setFilter(d.nome,btn);
-    bar.appendChild(btn);
-  });
+
+  // 3. Toggle "+ outros condutores"
+  const others=drivers.filter(d=>d.nome!==currentUser);
+  if(others.length){
+    const toggleBtn=document.createElement('button');
+    toggleBtn.className='fbtn';
+    toggleBtn.style.cssText='border:1.5px dashed #ccc;color:#999;border-radius:20px;padding:5px 12px;font-size:12px;cursor:pointer;flex-shrink:0;background:#fafafa';
+    toggleBtn.textContent=othersExpanded?'▴ ocultar':'▾ outros ('+others.length+')';
+    toggleBtn.onclick=()=>{ othersExpanded=!othersExpanded; buildFilterBar(); };
+    bar.appendChild(toggleBtn);
+
+    if(othersExpanded){
+      others.forEach(d=>{
+        const btn=document.createElement('button');
+        btn.className='fbtn'+(d.nome===activeFilter?' active':'');
+        btn.textContent=d.nome==='ÖV'?'🚌 ÖV':d.nome;
+        btn.dataset.cor=d.cor||'#27ae60';
+        if(d.nome===activeFilter){btn.style.background=d.cor||'#27ae60';btn.style.color='#fff';}
+        else btn.style.borderColor=d.cor||'#27ae60';
+        btn.onclick=()=>{ setFilter(d.nome,btn); buildFilterBar(); };
+        bar.appendChild(btn);
+      });
+    }
+  }
 }
 
 function setFilter(nome,btn){
