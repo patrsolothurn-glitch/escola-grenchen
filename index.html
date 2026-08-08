@@ -174,7 +174,7 @@ async function init(){
   }
 
   // Carregar condutores autorizados
-  const {data}=await sb.from('lucas_condutores').select('*').eq('autorizado',true).order('nome');
+  const {data}=await sb.from('lucas_condutores').select('id,nome,cor,autorizado,access_code').eq('autorizado',true).order('nome');
   drivers=data||[];
 
   // Ver se já tem utilizador guardado
@@ -204,9 +204,55 @@ function showLogin(){
       </div>
       <span style="color:${col};font-size:18px">›</span>`;
     btn.style.borderColor=col;
-    btn.onclick=()=>setUser(d.nome);
+    btn.onclick=()=>showCodeScreen(d.nome, d.cor||'#27ae60', d.access_code);
     btns.appendChild(btn);
   });
+}
+
+function showCodeScreen(nome, cor, storedCode) {
+  if(!storedCode) {
+    // Sem código definido = sem acesso
+    document.getElementById('login-screen').innerHTML = `
+      <div class="login-logo">🔒</div>
+      <div class="login-title">Sem acesso</div>
+      <div class="login-sub" style="color:#e53935;margin-top:8px">O administrador ainda não definiu o teu código de acesso.</div>
+      <button onclick="location.reload()" style="margin-top:24px;padding:12px 28px;background:#1a237e;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer">← Voltar</button>`;
+    return;
+  }
+  document.getElementById('login-screen').innerHTML = `
+    <div class="login-logo" style="font-size:36px">🔑</div>
+    <div class="login-title">Olá, ${nome}!</div>
+    <div class="login-sub">Introduz o teu código de acesso</div>
+    <div style="width:100%;max-width:280px;margin-top:20px">
+      <input id="code-input" type="password" inputmode="numeric" maxlength="8"
+        placeholder="Código..."
+        style="width:100%;padding:14px;font-size:20px;text-align:center;border:2px solid ${cor};border-radius:12px;outline:none;letter-spacing:4px"
+      />
+      <div id="code-error" style="color:#e53935;font-size:12px;margin-top:8px;text-align:center;display:none">Código incorreto. Tenta outra vez.</div>
+      <button onclick="checkCode('${nome}','${storedCode}')"
+        style="width:100%;margin-top:12px;padding:13px;background:${cor};color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:800;cursor:pointer">
+        Entrar →
+      </button>
+      <button onclick="location.reload()"
+        style="width:100%;margin-top:8px;padding:10px;background:transparent;color:#aaa;border:1.5px solid #e0e0e0;border-radius:12px;font-size:13px;cursor:pointer">
+        ← Voltar
+      </button>
+    </div>`;
+  setTimeout(()=>document.getElementById('code-input')?.focus(),100);
+  document.getElementById('code-input')?.addEventListener('keydown',function(e){
+    if(e.key==='Enter') checkCode('${nome}','${storedCode}');
+  });
+}
+
+function checkCode(nome, storedCode) {
+  const entered = document.getElementById('code-input')?.value||'';
+  if(entered === storedCode) {
+    setUser(nome);
+  } else {
+    document.getElementById('code-error').style.display='block';
+    document.getElementById('code-input').value='';
+    document.getElementById('code-input').focus();
+  }
 }
 
 function setUser(nome){
