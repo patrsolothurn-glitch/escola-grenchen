@@ -271,6 +271,19 @@ body{padding-bottom:env(safe-area-inset-bottom)}
   <button class="install-close" onclick="dismissInstall()">✕</button>
 </div>
 
+<!-- PROFILE MODAL -->
+<div id="profile-backdrop" onclick="if(event.target===this)closeProfile()">
+  <div id="profile-card">
+    <button class="profile-close" onclick="closeProfile()">✕</button>
+    <div class="profile-avatar-big" id="profile-avatar">👤</div>
+    <div class="profile-name" id="profile-name">—</div>
+    <div class="profile-role" id="profile-role">—</div>
+    <div id="profile-fields"></div>
+    <button class="profile-save" id="profile-save-btn" onclick="saveProfile()" style="display:none">💾 Guardar alterações</button>
+    <button class="profile-changeuser" onclick="closeProfile();changeUser();">🔄 Mudar de utilizador</button>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
 const SUPA_URL = 'https://qtynznppkxjmihxiquze.supabase.co';
