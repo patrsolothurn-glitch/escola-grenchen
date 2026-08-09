@@ -445,6 +445,47 @@ async function init(){
 }
 
 // ── LOGIN ─────────────────────────────────────────────────────────
+function driverBtnHtml(entity, roleLabel){
+  const col=entity.cor;
+  const isOV=entity.nome==='ÖV';
+  const avatarContent = entity.avatar_base64
+    ? `<img src="${entity.avatar_base64}">`
+    : (roleLabel==='Visitante' ? '👋' : (isOV?'🚌':'👤'));
+  const btn=document.createElement('button');
+  btn.className='login-btn';
+  btn.style.borderColor=col;
+  btn.innerHTML=`
+    <div class="lbtn-avatar" style="background:${col}22;border:2px solid ${col}">${avatarContent}</div>
+    <div>
+      <div class="lbtn-name" style="color:${col}">${entity.nome}</div>
+      <div class="lbtn-role">${roleLabel}</div>
+    </div>
+    <span class="lbtn-arrow" style="color:${col}">›</span>`;
+  btn.onclick=()=>showCode(entity);
+  return btn;
+}
+
+function checkPendingRegistration(){
+  const wrap=document.getElementById('pending-status-wrap');
+  if(!wrap) return;
+  wrap.innerHTML='';
+  const pending=JSON.parse(localStorage.getItem('escola_pending')||'null');
+  if(!pending) return;
+  // Já foi autorizado e tem código? -> limpar o pending, já pode fazer login normal
+  const nowAuthorized = visitantesAutorizados.find(v=>v.nome===pending.nome);
+  if(nowAuthorized && nowAuthorized.access_code){
+    localStorage.removeItem('escola_pending');
+    return;
+  }
+  const div=document.createElement('div');
+  div.style.cssText='width:100%;max-width:360px;background:#fff3e0;border:2px solid #ffcc80;border-radius:14px;padding:14px 16px;margin-bottom:16px;text-align:center';
+  div.innerHTML=`
+    <div style="font-size:13px;font-weight:800;color:#e65100">⏳ ${pending.nome}</div>
+    <div style="font-size:12px;color:#a1662f;margin-top:4px">Pedido pendente — aguarda o código do administrador.</div>
+    <button onclick="localStorage.removeItem('escola_pending');checkPendingRegistration();" style="margin-top:8px;background:none;border:none;color:#bbb;font-size:11px;text-decoration:underline;cursor:pointer">cancelar pedido</button>`;
+  wrap.appendChild(div);
+}
+
 function showLogin(){
   document.getElementById('login-screen').style.display='flex';
   document.getElementById('code-screen').style.display='none';
@@ -456,64 +497,43 @@ function showLogin(){
   const btns=document.getElementById('login-btns');
   btns.innerHTML='';
 
-  // Botão colapsado por privacidade — nomes só aparecem depois de tocar
-  const revealBtn=document.createElement('button');
-  revealBtn.id='reveal-names-btn';
-  revealBtn.style.cssText='width:100%;padding:16px;border:2px dashed #c5cae9;border-radius:14px;background:#f5f7ff;color:#1a237e;font-weight:800;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;max-width:360px';
-  revealBtn.innerHTML='👥 <span id="reveal-names-text">Ver lista de condutores</span>';
-  revealBtn.onclick=function(){
-    document.getElementById('names-list-wrap').style.display='flex';
-    revealBtn.style.display='none';
+  // Estado de pedido pendente (se este dispositivo se registou e ainda não tem código)
+  const pendingWrap=document.createElement('div');
+  pendingWrap.id='pending-status-wrap';
+  pendingWrap.style.cssText='width:100%;display:flex;flex-direction:column;align-items:center';
+  btns.appendChild(pendingWrap);
+
+  // ── Botão: Condutores ──
+  const revealDrivers=document.createElement('button');
+  revealDrivers.style.cssText='width:100%;padding:16px;border:2px dashed #c5cae9;border-radius:14px;background:#f5f7ff;color:#1a237e;font-weight:800;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;max-width:360px;margin-bottom:10px';
+  revealDrivers.innerHTML='👥 Ver lista de condutores';
+  const driversWrap=document.createElement('div');
+  driversWrap.style.cssText='display:none;flex-direction:column;gap:10px;width:100%;margin-bottom:10px';
+  revealDrivers.onclick=function(){
+    driversWrap.style.display='flex';
+    revealDrivers.style.display='none';
   };
-  btns.appendChild(revealBtn);
+  btns.appendChild(revealDrivers);
+  btns.appendChild(driversWrap);
+  drivers.forEach(d=>{ driversWrap.appendChild(driverBtnHtml(d, t.role)); });
 
-  const namesWrap=document.createElement('div');
-  namesWrap.id='names-list-wrap';
-  namesWrap.style.cssText='display:none;flex-direction:column;gap:10px;width:100%';
-  btns.appendChild(namesWrap);
-
-  drivers.forEach(d=>{
-    const col=d.cor||'#27ae60';
-    const isOV=d.nome==='ÖV';
-    const btn=document.createElement('button');
-    btn.className='login-btn';
-    btn.style.borderColor=col;
-    const avatarContent = d.avatar_base64
-      ? `<img src="${d.avatar_base64}">`
-      : (isOV?'🚌':'👤');
-    btn.innerHTML=`
-      <div class="lbtn-avatar" style="background:${col}22;border:2px solid ${col}">${avatarContent}</div>
-      <div>
-        <div class="lbtn-name" style="color:${col}">${d.nome}</div>
-        <div class="lbtn-role">${t.role}</div>
-      </div>
-      <span class="lbtn-arrow" style="color:${col}">›</span>`;
-    btn.onclick=()=>showCode(d);
-    namesWrap.appendChild(btn);
-  });
-
+  // ── Botão: Visitantes (separado) ──
   if(visitantesAutorizados.length){
-    const sep=document.createElement('div');
-    sep.style.cssText='font-size:10px;color:#bbb;text-transform:uppercase;letter-spacing:1px;font-weight:700;margin:14px 0 2px;text-align:center';
-    sep.textContent='👋 Visitantes';
-    namesWrap.appendChild(sep);
-    visitantesAutorizados.forEach(v=>{
-      const col=v.cor;
-      const btn=document.createElement('button');
-      btn.className='login-btn';
-      btn.style.borderColor=col;
-      const vAvatar = v.avatar_base64 ? `<img src="${v.avatar_base64}">` : '👋';
-      btn.innerHTML=`
-        <div class="lbtn-avatar" style="background:${col}22;border:2px solid ${col}">${vAvatar}</div>
-        <div>
-          <div class="lbtn-name" style="color:${col}">${v.nome}</div>
-          <div class="lbtn-role">Visitante</div>
-        </div>
-        <span class="lbtn-arrow" style="color:${col}">›</span>`;
-      btn.onclick=()=>showCode(v);
-      namesWrap.appendChild(btn);
-    });
+    const revealVisit=document.createElement('button');
+    revealVisit.style.cssText='width:100%;padding:16px;border:2px dashed #ce93d8;border-radius:14px;background:#faf5ff;color:#7b1fa2;font-weight:800;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;max-width:360px';
+    revealVisit.innerHTML='👋 Ver lista de visitantes';
+    const visitWrap=document.createElement('div');
+    visitWrap.style.cssText='display:none;flex-direction:column;gap:10px;width:100%';
+    revealVisit.onclick=function(){
+      visitWrap.style.display='flex';
+      revealVisit.style.display='none';
+    };
+    btns.appendChild(revealVisit);
+    btns.appendChild(visitWrap);
+    visitantesAutorizados.forEach(v=>{ visitWrap.appendChild(driverBtnHtml(v, 'Visitante')); });
   }
+
+  checkPendingRegistration();
 }
 
 // ── CODE ──────────────────────────────────────────────────────────
