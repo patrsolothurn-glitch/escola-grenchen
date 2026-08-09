@@ -286,6 +286,11 @@ body{padding-bottom:env(safe-area-inset-bottom)}
     </div>
     <div class="profile-name" id="profile-name">—</div>
     <div class="profile-role" id="profile-role">—</div>
+    <div class="theme-row" id="theme-row">
+      <button class="theme-btn" data-theme="light" onclick="setTheme('light')">☀️ Claro</button>
+      <button class="theme-btn" data-theme="dark" onclick="setTheme('dark')">🌙 Escuro</button>
+      <button class="theme-btn" data-theme="auto" onclick="setTheme('auto')">⚙️ Auto</button>
+    </div>
     <div id="profile-fields"></div>
     <button class="profile-save" id="profile-save-btn" onclick="saveProfile()" style="display:none">💾 Guardar alterações</button>
     <button class="profile-changeuser" onclick="closeProfile();changeUser();">🔄 Mudar de utilizador</button>
@@ -297,6 +302,26 @@ body{padding-bottom:env(safe-area-inset-bottom)}
 const SUPA_URL = 'https://qtynznppkxjmihxiquze.supabase.co';
 const SUPA_KEY = 'sb_publishable_mRGjfnvI_5rqD_JCv9T8AQ_n7fzOfnA';
 const sb = supabase.createClient(SUPA_URL, SUPA_KEY);
+
+// ── TEMA (claro / escuro / auto) ─────────────────────────────────
+let themePref = localStorage.getItem('escola_theme') || 'auto';
+function applyTheme(pref){
+  const mode = pref==='auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light') : pref;
+  document.body.classList.toggle('dark', mode==='dark');
+}
+function updateThemeButtons(){
+  document.querySelectorAll('.theme-btn').forEach(b=>b.classList.toggle('active', b.dataset.theme===themePref));
+}
+function setTheme(p){
+  themePref=p;
+  localStorage.setItem('escola_theme',p);
+  applyTheme(p);
+  updateThemeButtons();
+}
+applyTheme(themePref);
+if(window.matchMedia){
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', ()=>{ if(themePref==='auto') applyTheme('auto'); });
+}
 
 // ── TRADUÇÕES ──────────────────────────────────────────────────────
 const T = {
@@ -517,6 +542,7 @@ function showProfile(){
     saveBtn.style.display='block';
   }
 
+  updateThemeButtons();
   document.getElementById('profile-backdrop').style.display='flex';
 }
 
