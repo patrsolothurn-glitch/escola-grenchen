@@ -55,15 +55,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 }
 
 /* ── Safe area for notched phones ── */
-.app-header{padding-top:max(12px, env(safe-area-inset-top))}
+.app-header{padding-top:max(12px, calc(env(safe-area-inset-top) + 4px))}
 .install-bar{padding-bottom:max(10px, env(safe-area-inset-bottom))}
 body{padding-bottom:env(safe-area-inset-bottom)}
 
 /* Extra top space when installed as standalone app (Windows/Mac title bar) */
 @media (display-mode: standalone), (display-mode: window-controls-overlay) {
-  .app-header{padding-top:38px !important}
-  .login-screen{padding-top:38px}
-  .lang-bar{padding-top:38px !important}
+  .app-header{padding-top:calc(env(safe-area-inset-top) + 14px) !important}
+  .login-screen{padding-top:calc(env(safe-area-inset-top) + 14px)}
+  .lang-bar{padding-top:calc(env(safe-area-inset-top) + 14px) !important}
 }
 
 /* ── ECRÃ DE LOGIN ── */
