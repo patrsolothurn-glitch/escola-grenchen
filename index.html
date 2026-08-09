@@ -446,6 +446,69 @@ function buildLangBar(containerId){
 }
 
 // ── INIT ──────────────────────────────────────────────────────────
+function showProfile(){
+  const me=findMe();
+  if(!me) return;
+  const col=me.cor||driverColor(me.nome);
+  document.getElementById('profile-avatar').innerHTML = me.avatar_base64
+    ? '<img src="'+me.avatar_base64+'">'
+    : (me.isVisitante ? '👋' : (me.nome==='ÖV'?'🚌':'👤'));
+  document.getElementById('profile-avatar').style.background = col+'22';
+  document.getElementById('profile-avatar').style.border = '3px solid '+col;
+  document.getElementById('profile-name').textContent = me.nome;
+  document.getElementById('profile-role').textContent = me.isVisitante ? 'Visitante' : 'Condutor autorizado';
+
+  const fields=document.getElementById('profile-fields');
+  const saveBtn=document.getElementById('profile-save-btn');
+
+  if(me.isVisitante){
+    fields.innerHTML = `
+      <div class="profile-field">
+        <label>🎓 Turma</label>
+        <input id="pf-turma" value="${me.turma||''}" placeholder="ex: SEK P-1p" />
+      </div>
+      <div class="profile-field">
+        <label>📞 Telemóvel</label>
+        <input id="pf-tel" type="tel" value="${me.telefone||''}" placeholder="opcional" />
+      </div>
+      <div class="profile-field">
+        <label>✉️ Email</label>
+        <input id="pf-email" type="email" value="${me.email||''}" placeholder="opcional" />
+      </div>`;
+    saveBtn.style.display='block';
+  } else {
+    fields.innerHTML = `<div style="text-align:center;color:#bbb;font-size:12px;padding:8px 0">Sem dados adicionais para condutores.</div>`;
+    saveBtn.style.display='none';
+  }
+
+  document.getElementById('profile-backdrop').style.display='flex';
+}
+
+function closeProfile(){
+  document.getElementById('profile-backdrop').style.display='none';
+}
+
+async function saveProfile(){
+  const me=findMe();
+  if(!me || !me.isVisitante) { closeProfile(); return; }
+  const turma=document.getElementById('pf-turma').value.trim();
+  const tel=document.getElementById('pf-tel').value.trim();
+  const email=document.getElementById('pf-email').value.trim();
+  try{
+    const {error}=await sb.rpc('update_visitante_profile', {
+      p_id: me.id, p_email: email||null, p_telefone: tel||null, p_turma: turma||null
+    });
+    if(!error){
+      me.turma=turma; me.telefone=tel; me.email=email;
+      closeProfile();
+    } else {
+      alert('Erro ao guardar: '+error.message);
+    }
+  }catch(e){
+    alert('Erro ao guardar dados');
+  }
+}
+
 async function init(){
   const {data:cfg}=await sb.from('lucas_config').select('*');
   if(cfg){
