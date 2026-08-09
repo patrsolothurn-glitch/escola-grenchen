@@ -894,6 +894,13 @@ async function submitRegister(){
     const done=document.getElementById('register-done');
     done.style.display='block';
     done.innerHTML='<div class="register-done">'+t.pedido_enviado+'<br>'+t.pedido_msg+'</div>';
+
+    // Avisar o administrador por notificação push
+    try{
+      await sb.functions.invoke('send-push', {
+        body: { title: '🏫 Novo pedido de acesso', body: nome+' pediu acesso à Escola Grenchen' }
+      });
+    }catch(pushErr){}
   }catch(e){}
 }
 
