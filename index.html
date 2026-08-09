@@ -729,13 +729,22 @@ function setUser(nome){
   document.getElementById('code-screen').style.display='none';
   document.getElementById('app-screen').style.display='block';
   const col=driverColor(nome);
-  const isOV=nome==='ÖV';
-  const btn=document.getElementById('user-btn');
-  btn.textContent=(isOV?'🚌':'👤')+' '+nome;
-  btn.style.background=col+'33';
+  renderUserBtn();
+  document.getElementById('user-btn').style.background=col+'33';
   updateMyAvatarPreview();
   buildFilterBar();
   loadSchedule();
+}
+
+function renderUserBtn(){
+  const btn=document.getElementById('user-btn');
+  if(!btn || !currentUser) return;
+  const me=findMe();
+  const isOV=currentUser==='ÖV';
+  const avatarHtml = (me && me.avatar_base64)
+    ? '<span class="user-avatar"><img src="'+me.avatar_base64+'"></span>'
+    : (isOV?'🚌':'👤');
+  btn.innerHTML = avatarHtml+' '+currentUser;
 }
 
 function findMe(){
@@ -787,6 +796,7 @@ document.getElementById('my-avatar-input')?.addEventListener('change', async e=>
     if(!error){
       me.avatar_base64=b64;
       updateMyAvatarPreview();
+      renderUserBtn();
       // Atualizar também a foto no modal de perfil, se estiver aberto
       const profAv=document.getElementById('profile-avatar');
       if(profAv && document.getElementById('profile-backdrop').style.display==='flex'){
