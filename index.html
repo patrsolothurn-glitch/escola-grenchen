@@ -925,21 +925,21 @@ function slotHtml(day,slot,label,defaultTime,subLabel,subTime){
 
 function printWeek(){
   const rows = DAYS_BASE.map((day,i)=>{
-    function cell(slot){
+    function cell(slot, defaultTime){
       const k=day.key+':'+slot; const sc=schedule[k]||{};
       const col=sc.condutor?(driverColor(sc.condutor)||'#333'):'#bbb';
-      const hora=sc.hora_override;
+      const hora=sc.hora_override||defaultTime;
       const isOV=sc.condutor==='ÖV';
       return '<td style="border:1px solid #ccc;padding:8px 10px;background:#fff;vertical-align:top">'
         +'<div style="font-weight:800;font-size:13px;color:'+col+'">'+(isOV?'🚌 ':'')+(sc.condutor||'—')+'</div>'
-        +(hora?'<div style="font-size:10px;color:#e65100;margin-top:2px">⏰ '+hora+'</div>':'')
+        +(hora?'<div style="font-size:10px;color:'+(sc.hora_override?'#e65100':'#888')+';margin-top:2px">'+(sc.hora_override?'⏰ ':'🕐 ')+hora+'</div>':'')
         +(sc.enea?'<div style="font-size:10px;color:#7b1fa2;margin-top:3px">👦 Enea</div>':'')
         +'</td>';
     }
     return '<tr><td style="border:1px solid #ccc;padding:8px;background:#e8eaf6;text-align:center;vertical-align:middle">'
       +'<div style="font-weight:900;font-size:13px;color:#1a237e">'+t.days[i]+'</div>'
       +'<div style="font-size:10px;color:#777;margin-top:2px">'+fmt(addDays(weekStart,i))+'</div></td>'
-      +cell('leva_manha')+cell('busca_almoco')
+      +cell('leva_manha')+cell('busca_almoco', addMin(day.sai,5))
       +(day.tarde?cell('leva_tarde')+cell('busca_fim')
         :'<td colspan="2" style="border:1px solid #ccc;background:#f5f5f5;text-align:center;color:#ccc;vertical-align:middle">—</td>')
       +'</tr>';
