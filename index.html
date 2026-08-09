@@ -196,6 +196,9 @@ body{padding-bottom:env(safe-area-inset-bottom)}
     <button class="register-link" id="register-link" onclick="showRegisterForm()">➕ Não estás na lista?</button>
     <div class="register-form" id="register-form" style="display:none">
       <input id="register-name" type="text" maxlength="40" placeholder="O teu nome" />
+      <input id="register-email" type="email" maxlength="60" placeholder="Email (opcional)" />
+      <input id="register-tel" type="tel" maxlength="20" placeholder="Telemóvel (opcional)" />
+      <input id="register-turma" type="text" maxlength="20" placeholder="Turma (opcional)" />
       <button class="register-submit" onclick="submitRegister()">Pedir acesso →</button>
     </div>
     <div id="register-done" style="display:none"></div>
@@ -851,9 +854,15 @@ function showRegisterForm(){
 
 async function submitRegister(){
   const nome=document.getElementById('register-name').value.trim();
+  const email=document.getElementById('register-email').value.trim();
+  const tel=document.getElementById('register-tel').value.trim();
+  const turma=document.getElementById('register-turma').value.trim();
   if(!nome) return;
   try{
-    const {error}=await sb.from('lucas_visitantes').insert({nome:nome, autorizado:false, access_code:null});
+    const {error}=await sb.from('lucas_visitantes').insert({
+      nome:nome, autorizado:false, access_code:null,
+      email:email||null, telefone:tel||null, turma:turma||null
+    });
     document.getElementById('register-form').style.display='none';
     const done=document.getElementById('register-done');
     done.style.display='block';
