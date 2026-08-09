@@ -217,7 +217,7 @@ body{padding-bottom:env(safe-area-inset-bottom)}
     <div id="lang-dropdown" style="display:none;position:absolute;top:100%;right:16px;background:#fff;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.2);padding:6px;z-index:40;margin-top:4px">
     </div>
     <div class="app-header-row">
-      
+      <button class="back-btn" id="exit-btn" onclick="doExit()" title="Voltar / Sair">‹</button>
       <div class="header-info">
         <div class="header-name" id="app-name">🏫 Escola Grenchen Sek P 1p 26/27</div>
         <div class="header-addr" id="app-addr">Schulstrasse 25, 2540 Grenchen</div>
@@ -929,6 +929,28 @@ function updateRegisterTexts(){
   document.addEventListener('touchmove', e=>{ onMove(e.touches[0].clientY); }, {passive:true});
   document.addEventListener('touchend', onEnd, {passive:true});
 })();
+
+function doExit(){
+  // Se há histórico de navegação real (veio de outra página), volta
+  if(window.history.length > 1 && document.referrer && document.referrer.indexOf(location.origin) !== 0){
+    history.back();
+    return;
+  }
+  // App instalada / aberta direta: tentar fechar a janela
+  try{
+    window.close();
+  }catch(e){}
+  // Se não fechou (browser normal bloqueia window.close), mostrar aviso
+  setTimeout(function(){
+    if(!document.hidden){
+      alert(lang==='DE'?'Du kannst diesen Tab jetzt schliessen.':
+            lang==='FR'?'Tu peux fermer cet onglet maintenant.':
+            lang==='IT'?'Ora puoi chiudere questa scheda.':
+            lang==='EN'?'You can close this tab now.':
+            'Já podes fechar esta aba.');
+    }
+  }, 200);
+}
 
 init();
 </script>
