@@ -455,6 +455,23 @@ function showLogin(){
   updateRegisterTexts();
   const btns=document.getElementById('login-btns');
   btns.innerHTML='';
+
+  // Botão colapsado por privacidade — nomes só aparecem depois de tocar
+  const revealBtn=document.createElement('button');
+  revealBtn.id='reveal-names-btn';
+  revealBtn.style.cssText='width:100%;padding:16px;border:2px dashed #c5cae9;border-radius:14px;background:#f5f7ff;color:#1a237e;font-weight:800;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;max-width:360px';
+  revealBtn.innerHTML='👥 <span id="reveal-names-text">Ver lista de condutores</span>';
+  revealBtn.onclick=function(){
+    document.getElementById('names-list-wrap').style.display='flex';
+    revealBtn.style.display='none';
+  };
+  btns.appendChild(revealBtn);
+
+  const namesWrap=document.createElement('div');
+  namesWrap.id='names-list-wrap';
+  namesWrap.style.cssText='display:none;flex-direction:column;gap:10px;width:100%';
+  btns.appendChild(namesWrap);
+
   drivers.forEach(d=>{
     const col=d.cor||'#27ae60';
     const isOV=d.nome==='ÖV';
@@ -472,14 +489,14 @@ function showLogin(){
       </div>
       <span class="lbtn-arrow" style="color:${col}">›</span>`;
     btn.onclick=()=>showCode(d);
-    btns.appendChild(btn);
+    namesWrap.appendChild(btn);
   });
 
   if(visitantesAutorizados.length){
     const sep=document.createElement('div');
     sep.style.cssText='font-size:10px;color:#bbb;text-transform:uppercase;letter-spacing:1px;font-weight:700;margin:14px 0 2px;text-align:center';
     sep.textContent='👋 Visitantes';
-    btns.appendChild(sep);
+    namesWrap.appendChild(sep);
     visitantesAutorizados.forEach(v=>{
       const col=v.cor;
       const btn=document.createElement('button');
@@ -493,7 +510,7 @@ function showLogin(){
         </div>
         <span class="lbtn-arrow" style="color:${col}">›</span>`;
       btn.onclick=()=>showCode(v);
-      btns.appendChild(btn);
+      namesWrap.appendChild(btn);
     });
   }
 }
