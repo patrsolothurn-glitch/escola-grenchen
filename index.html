@@ -618,8 +618,8 @@ function showLogin(){
   btns.appendChild(driversWrap);
   drivers.forEach(d=>{ driversWrap.appendChild(driverBtnHtml(d, t.role)); });
 
-  // ── Botão: Visitantes (separado) ──
-  if(visitantesAutorizados.length){
+  // ── Botão: Visitantes (separado) — sempre visível ──
+  {
     const revealVisit=document.createElement('button');
     revealVisit.style.cssText='width:100%;padding:16px;border:2px dashed #ce93d8;border-radius:14px;background:#faf5ff;color:#7b1fa2;font-weight:800;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;max-width:360px';
     revealVisit.innerHTML='👋 Ver lista de visitantes';
@@ -631,7 +631,9 @@ function showLogin(){
     };
     btns.appendChild(revealVisit);
     btns.appendChild(visitWrap);
-    visitantesAutorizados.forEach(v=>{ visitWrap.appendChild(driverBtnHtml(v, 'Visitante')); });
+    if(visitantesAutorizados.length){
+      visitantesAutorizados.forEach(v=>{ visitWrap.appendChild(driverBtnHtml(v, 'Visitante')); });
+    }
   }
 
   checkPendingRegistration();
