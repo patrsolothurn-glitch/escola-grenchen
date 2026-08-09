@@ -742,6 +742,7 @@ function buildFilterBar(){
 
 function setFilter(nome,btn){
   activeFilter=nome;
+  if(currentUser) localStorage.setItem('escola_filter_'+currentUser, nome||'');
   document.querySelectorAll('.fbtn').forEach(b=>{
     b.classList.remove('active');
     b.style.background='#fff'; b.style.color='#777';
