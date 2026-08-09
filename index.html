@@ -870,7 +870,13 @@ function renderBanner(){
     const daySlots=['leva_manha','busca_almoco'].concat(d.tarde?['leva_tarde','busca_fim']:[]);
     daySlots.forEach(sl=>{
       const sc=schedule[d.key+':'+sl]||{};
-      if(sc.condutor===currentUser) mySlots.push({dayIdx:i,slot:sl,hora:sc.hora_override,enea:sc.enea});
+      if(sc.condutor===currentUser){
+        const defaultTime = sl==='leva_manha' ? '7:05'
+          : sl==='busca_almoco' ? addMin(d.sai,5)
+          : sl==='leva_tarde' ? '13:05'
+          : addMin(schoolAcaba,5);
+        mySlots.push({dayIdx:i,slot:sl,hora:sc.hora_override||defaultTime,isExc:!!sc.hora_override,enea:sc.enea});
+      }
     });
   });
   if(!mySlots.length){banner.style.display='none';return;}
@@ -879,7 +885,7 @@ function renderBanner(){
   slots.innerHTML=mySlots.map(s=>`
     <div class="banner-item">
       <span class="banner-day">${t.short[s.dayIdx]}</span>
-      <span class="banner-info">${slotNames[s.slot]||s.slot}${s.hora?' ⏰'+s.hora:''}${s.enea?' 👦':''}</span>
+      <span class="banner-info">${slotNames[s.slot]||s.slot} <b>${s.hora}</b>${s.isExc?' ⏰':''}${s.enea?' 👦':''}</span>
     </div>`).join('');
 }
 
