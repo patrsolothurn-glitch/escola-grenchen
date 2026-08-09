@@ -63,12 +63,13 @@ body{padding-bottom:env(safe-area-inset-bottom)}
 @media (display-mode: standalone), (display-mode: window-controls-overlay) {
   .app-header{padding-top:38px !important}
   .login-screen{padding-top:38px}
+  .lang-bar{padding-top:38px !important}
 }
 
 /* ── ECRÃ DE LOGIN ── */
 .screen{min-height:100vh;display:flex;flex-direction:column}
 
-.lang-bar{display:flex;justify-content:center;gap:8px;padding:16px 16px 8px;background:#fff;border-bottom:1px solid #eee}
+.lang-bar{display:flex;justify-content:center;gap:8px;padding:calc(16px + env(safe-area-inset-top)) 16px 8px;background:#fff;border-bottom:1px solid #eee}
 .lang-btn{background:none;border:2px solid transparent;border-radius:10px;padding:4px 8px;font-size:22px;cursor:pointer;opacity:.4;transition:all .15s}
 .lang-btn.active{border-color:#1a237e;opacity:1;background:#e8eaf6}
 
