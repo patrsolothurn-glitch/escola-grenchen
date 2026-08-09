@@ -317,6 +317,7 @@ let drivers=[], schedule={}, currentUser=null, activeFilter=null;
 let weekStart=getMonday(new Date());
 let deferredInstall=null;
 let schoolComeca='07:30', schoolAcaba='16:55';
+let visitantesAutorizados=[];
 
 // ── PWA INSTALL ───────────────────────────────────────────────────
 window.addEventListener('beforeinstallprompt', e=>{
@@ -407,6 +408,8 @@ async function init(){
   }
   const {data}=await sb.from('lucas_condutores').select('id,nome,cor,autorizado,access_code,avatar_base64').eq('autorizado',true).order('nome');
   drivers=data||[];
+  const {data:visitData}=await sb.from('lucas_visitantes').select('id,nome,access_code,autorizado').eq('autorizado',true).not('access_code','is',null).order('nome');
+  visitantesAutorizados=(visitData||[]).map(v=>({id:v.id,nome:v.nome,access_code:v.access_code,autorizado:true,cor:'#7b1fa2',isVisitante:true}));
   const saved=localStorage.getItem('escola_user');
   if(saved && drivers.find(d=>d.nome===saved)){ setUser(saved); }
   else showLogin();
@@ -442,6 +445,28 @@ function showLogin(){
     btn.onclick=()=>showCode(d);
     btns.appendChild(btn);
   });
+
+  if(visitantesAutorizados.length){
+    const sep=document.createElement('div');
+    sep.style.cssText='font-size:10px;color:#bbb;text-transform:uppercase;letter-spacing:1px;font-weight:700;margin:14px 0 2px;text-align:center';
+    sep.textContent='👋 Visitantes';
+    btns.appendChild(sep);
+    visitantesAutorizados.forEach(v=>{
+      const col=v.cor;
+      const btn=document.createElement('button');
+      btn.className='login-btn';
+      btn.style.borderColor=col;
+      btn.innerHTML=`
+        <div class="lbtn-avatar" style="background:${col}22;border:2px solid ${col}">👋</div>
+        <div>
+          <div class="lbtn-name" style="color:${col}">${v.nome}</div>
+          <div class="lbtn-role">Visitante</div>
+        </div>
+        <span class="lbtn-arrow" style="color:${col}">›</span>`;
+      btn.onclick=()=>showCode(v);
+      btns.appendChild(btn);
+    });
+  }
 }
 
 // ── CODE ──────────────────────────────────────────────────────────
