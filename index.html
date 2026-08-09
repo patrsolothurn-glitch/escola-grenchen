@@ -367,6 +367,13 @@ function getWeekNumber(d){
   const yearStart=new Date(Date.UTC(dt.getUTCFullYear(),0,1));
   return Math.ceil((((dt-yearStart)/86400000)+1)/7);
 }
+function addMin(hhmm,add){
+  const parts=hhmm.split(':');
+  const h=parseInt(parts[0],10), m=parseInt(parts[1],10);
+  let total=h*60+m+add;
+  const nh=Math.floor(total/60), nm=total%60;
+  return nh+':'+String(nm).padStart(2,'0');
+}
 function isCurWeek(){return toISO(weekStart)===toISO(getMonday(new Date()));}
 function driverColor(nome){const d=drivers.find(x=>x.nome===nome);return d?(d.cor||'#27ae60'):'#888';}
 
@@ -697,12 +704,12 @@ function renderDays(){
     </div><div class="day-body">
       <div class="period-lbl p-manha">${t.manha}</div>
       ${slotHtml(day,'leva_manha',t.leva,'7:05',t.entra_escola,schoolComeca)}
-      ${slotHtml(day,'busca_almoco',t.busca,day.sai,t.sai_escola,day.sai)}`;
+      ${slotHtml(day,'busca_almoco',t.busca,addMin(day.sai,5),t.sai_escola,day.sai)}`;
 
     if(day.tarde){
       html+=`<div class="period-lbl p-tarde" style="margin-top:10px">${t.tarde}</div>
         ${slotHtml(day,'leva_tarde',t.leva,'13:05',t.entra_escola,'13:30')}
-        ${slotHtml(day,'busca_fim',t.busca,'16:55',t.sai_escola,schoolAcaba)}`;
+        ${slotHtml(day,'busca_fim',t.busca,addMin(schoolAcaba,5),t.sai_escola,schoolAcaba)}`;
     } else {
       html+=`<div class="no-tarde">${t.sem_tarde}</div>`;
     }
