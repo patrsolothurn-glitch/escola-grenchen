@@ -611,8 +611,9 @@ function showLogin(){
   const driversWrap=document.createElement('div');
   driversWrap.style.cssText='display:none;flex-direction:column;gap:10px;width:100%;margin-bottom:10px';
   revealDrivers.onclick=function(){
-    driversWrap.style.display='flex';
-    revealDrivers.style.display='none';
+    const isOpen=driversWrap.style.display==='flex';
+    driversWrap.style.display=isOpen?'none':'flex';
+    revealDrivers.innerHTML=isOpen?'👥 Ver lista de condutores':'▴ Ocultar lista de condutores';
   };
   btns.appendChild(revealDrivers);
   btns.appendChild(driversWrap);
@@ -626,8 +627,9 @@ function showLogin(){
     const visitWrap=document.createElement('div');
     visitWrap.style.cssText='display:none;flex-direction:column;gap:10px;width:100%';
     revealVisit.onclick=function(){
-      visitWrap.style.display='flex';
-      revealVisit.style.display='none';
+      const isOpen=visitWrap.style.display==='flex';
+      visitWrap.style.display=isOpen?'none':'flex';
+      revealVisit.innerHTML=isOpen?'👋 Ver lista de visitantes':'▴ Ocultar lista de visitantes';
     };
     btns.appendChild(revealVisit);
     btns.appendChild(visitWrap);
