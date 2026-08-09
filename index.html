@@ -499,8 +499,16 @@ function showProfile(){
       </div>`;
     saveBtn.style.display='block';
   } else {
-    fields.innerHTML = `<div style="text-align:center;color:#bbb;font-size:12px;padding:8px 0">Sem dados adicionais para condutores.</div>`;
-    saveBtn.style.display='none';
+    fields.innerHTML = `
+      <div class="profile-field">
+        <label>📞 Telemóvel</label>
+        <input id="pf-tel" type="tel" value="${me.telefone||''}" placeholder="opcional" />
+      </div>
+      <div class="profile-field">
+        <label>✉️ Email</label>
+        <input id="pf-email" type="email" value="${me.email||''}" placeholder="opcional" />
+      </div>`;
+    saveBtn.style.display='block';
   }
 
   document.getElementById('profile-backdrop').style.display='flex';
@@ -512,20 +520,26 @@ function closeProfile(){
 
 async function saveProfile(){
   const me=findMe();
-  if(!me || !me.isVisitante) { closeProfile(); return; }
-  const turma=document.getElementById('pf-turma').value.trim();
-  const tel=document.getElementById('pf-tel').value.trim();
-  const email=document.getElementById('pf-email').value.trim();
+  if(!me) { closeProfile(); return; }
+  const telEl=document.getElementById('pf-tel');
+  const emailEl=document.getElementById('pf-email');
+  const turmaEl=document.getElementById('pf-turma');
+  const tel=telEl?telEl.value.trim():'';
+  const email=emailEl?emailEl.value.trim():'';
+  const turma=turmaEl?turmaEl.value.trim():null;
   const btn=document.getElementById('profile-save-btn');
   const originalText=btn.textContent;
   btn.textContent='A guardar...';
   btn.disabled=true;
   try{
-    const {error}=await sb.rpc('update_visitante_profile', {
-      p_id: me.id, p_email: email||null, p_telefone: tel||null, p_turma: turma||null
-    });
+    const rpcName = me.isVisitante ? 'update_visitante_profile' : 'update_condutor_profile';
+    const params = me.isVisitante
+      ? { p_id: me.id, p_email: email||null, p_telefone: tel||null, p_turma: turma||null }
+      : { p_id: me.id, p_email: email||null, p_telefone: tel||null };
+    const {error}=await sb.rpc(rpcName, params);
     if(!error){
-      me.turma=turma; me.telefone=tel; me.email=email;
+      if(me.isVisitante) me.turma=turma;
+      me.telefone=tel; me.email=email;
       btn.textContent='✓ Guardado!';
       setTimeout(()=>{ closeProfile(); btn.textContent=originalText; btn.disabled=false; }, 700);
     } else {
@@ -555,7 +569,7 @@ async function init(){
     if(m.escola_comeca) schoolComeca=m.escola_comeca;
     if(m.escola_acaba) schoolAcaba=m.escola_acaba;
   }
-  const {data}=await sb.from('lucas_condutores').select('id,nome,cor,autorizado,access_code,avatar_base64').eq('autorizado',true).order('nome');
+  const {data}=await sb.from('lucas_condutores').select('id,nome,cor,autorizado,access_code,avatar_base64,telefone,email').eq('autorizado',true).order('nome');
   drivers=data||[];
   const {data:visitData}=await sb.from('lucas_visitantes').select('id,nome,access_code,autorizado,avatar_base64,email,telefone,turma').eq('autorizado',true).order('nome');
   visitantesAutorizados=(visitData||[]).map(v=>({id:v.id,nome:v.nome,access_code:v.access_code,autorizado:true,cor:'#7b1fa2',isVisitante:true,avatar_base64:v.avatar_base64,email:v.email,telefone:v.telefone,turma:v.turma}));
