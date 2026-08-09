@@ -915,6 +915,9 @@ async function submitRegister(){
     done.style.display='block';
     done.innerHTML='<div class="register-done">'+t.pedido_enviado+'<br>'+t.pedido_msg+'</div>';
 
+    // Guardar estado pendente neste dispositivo
+    localStorage.setItem('escola_pending', JSON.stringify({nome:nome, ts:Date.now()}));
+
     // Avisar o administrador por notificação push
     try{
       await sb.functions.invoke('send-push', {
