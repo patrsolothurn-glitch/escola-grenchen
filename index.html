@@ -537,8 +537,8 @@ async function init(){
   }
   const {data}=await sb.from('lucas_condutores').select('id,nome,cor,autorizado,access_code,avatar_base64').eq('autorizado',true).order('nome');
   drivers=data||[];
-  const {data:visitData}=await sb.from('lucas_visitantes').select('id,nome,access_code,autorizado,avatar_base64').eq('autorizado',true).order('nome');
-  visitantesAutorizados=(visitData||[]).map(v=>({id:v.id,nome:v.nome,access_code:v.access_code,autorizado:true,cor:'#7b1fa2',isVisitante:true,avatar_base64:v.avatar_base64}));
+  const {data:visitData}=await sb.from('lucas_visitantes').select('id,nome,access_code,autorizado,avatar_base64,email,telefone,turma').eq('autorizado',true).order('nome');
+  visitantesAutorizados=(visitData||[]).map(v=>({id:v.id,nome:v.nome,access_code:v.access_code,autorizado:true,cor:'#7b1fa2',isVisitante:true,avatar_base64:v.avatar_base64,email:v.email,telefone:v.telefone,turma:v.turma}));
   const saved=localStorage.getItem('escola_user');
   const savedIsValid = saved && (drivers.find(d=>d.nome===saved) || visitantesAutorizados.find(v=>v.nome===saved));
   if(savedIsValid){ setUser(saved); }
