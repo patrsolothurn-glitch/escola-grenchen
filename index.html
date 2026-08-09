@@ -295,6 +295,7 @@ let t = T[lang]||T.PT;
 let drivers=[], schedule={}, currentUser=null, activeFilter=null;
 let weekStart=getMonday(new Date());
 let deferredInstall=null;
+let schoolComeca='07:30', schoolAcaba='16:55';
 
 // ── PWA INSTALL ───────────────────────────────────────────────────
 window.addEventListener('beforeinstallprompt', e=>{
@@ -373,6 +374,8 @@ async function init(){
       document.getElementById('ll-addr').textContent=m.escola_morada;
       document.getElementById('app-addr').textContent=m.escola_morada;
     }
+    if(m.escola_comeca) schoolComeca=m.escola_comeca;
+    if(m.escola_acaba) schoolAcaba=m.escola_acaba;
   }
   const {data}=await sb.from('lucas_condutores').select('id,nome,cor,autorizado,access_code').eq('autorizado',true).order('nome');
   drivers=data||[];
@@ -586,13 +589,13 @@ function renderDays(){
       <span class="day-date">${dayDate}</span>
     </div><div class="day-body">
       <div class="period-lbl p-manha">${t.manha}</div>
-      ${slotHtml(day,'leva_manha',t.leva,'7:05',t.entra_escola,'7:30')}
+      ${slotHtml(day,'leva_manha',t.leva,'7:05',t.entra_escola,schoolComeca)}
       ${slotHtml(day,'busca_almoco',t.busca,day.sai,t.sai_escola,day.sai)}`;
 
     if(day.tarde){
       html+=`<div class="period-lbl p-tarde" style="margin-top:10px">${t.tarde}</div>
         ${slotHtml(day,'leva_tarde',t.leva,'13:05',t.entra_escola,'13:30')}
-        ${slotHtml(day,'busca_fim',t.busca,'16:55',t.sai_escola,'16:55')}`;
+        ${slotHtml(day,'busca_fim',t.busca,'16:55',t.sai_escola,schoolAcaba)}`;
     } else {
       html+=`<div class="no-tarde">${t.sem_tarde}</div>`;
     }
