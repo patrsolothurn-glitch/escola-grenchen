@@ -870,6 +870,57 @@ function updateRegisterTexts(){
   if(btn) btn.textContent=t.pedir_acesso;
 }
 
+// ── PULL TO REFRESH ─────────────────────────────────────────────
+(function(){
+  let startY=0, pulling=false, currentPull=0;
+  const THRESHOLD=64, MAXPULL=110;
+  const indicator=document.getElementById('ptr-indicator');
+  const icon=document.getElementById('ptr-icon');
+  const text=document.getElementById('ptr-text');
+
+  function onStart(y){
+    if(window.scrollY<=0 && document.getElementById('app-screen').style.display!=='none'){
+      startY=y; pulling=true; currentPull=0;
+    }
+  }
+  function onMove(y){
+    if(!pulling) return;
+    const delta=y-startY;
+    if(delta<=0){ currentPull=0; indicator.style.height='0px'; return; }
+    // resistência: puxa devagar, sobe pouco por pixel arrastado
+    currentPull=Math.min(delta*0.35, MAXPULL);
+    indicator.style.height=currentPull+'px';
+    if(currentPull>=THRESHOLD){
+      text.textContent='Solta para atualizar';
+      icon.style.transform='rotate(180deg)';
+    } else {
+      text.textContent='Puxa para atualizar';
+      icon.style.transform='rotate(0deg)';
+    }
+  }
+  async function onEnd(){
+    if(!pulling) return;
+    pulling=false;
+    if(currentPull>=THRESHOLD){
+      icon.textContent='🔄';
+      icon.classList.add('spin');
+      text.textContent='A atualizar...';
+      indicator.style.height='56px';
+      await loadSchedule();
+      await new Promise(r=>setTimeout(r,300));
+      icon.classList.remove('spin');
+      icon.textContent='⬇️';
+      icon.style.transform='rotate(0deg)';
+    }
+    indicator.style.height='0px';
+    currentPull=0;
+  }
+
+  document.addEventListener('touchstart', e=>{ onStart(e.touches[0].clientY); }, {passive:true});
+  document.addEventListener('touchmove', e=>{ onMove(e.touches[0].clientY); }, {passive:true});
+  document.addEventListener('touchend', onEnd, {passive:true});
+})();
+
 init();
 </script>
 </body>
