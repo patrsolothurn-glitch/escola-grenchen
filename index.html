@@ -347,6 +347,13 @@ function toISO(d){return d.toISOString().split('T')[0];}
 function fmt(d){return d.toLocaleDateString('pt-PT',{day:'2-digit',month:'2-digit'});}
 function addDays(d,n){const r=new Date(d);r.setDate(r.getDate()+n);return r;}
 function weekLbl(){return fmt(weekStart)+' – '+fmt(addDays(weekStart,4));}
+function getWeekNumber(d){
+  const dt=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));
+  const day=dt.getUTCDay()||7;
+  dt.setUTCDate(dt.getUTCDate()+4-day);
+  const yearStart=new Date(Date.UTC(dt.getUTCFullYear(),0,1));
+  return Math.ceil((((dt-yearStart)/86400000)+1)/7);
+}
 function isCurWeek(){return toISO(weekStart)===toISO(getMonday(new Date()));}
 function driverColor(nome){const d=drivers.find(x=>x.nome===nome);return d?(d.cor||'#27ae60'):'#888';}
 
@@ -536,7 +543,7 @@ async function loadSchedule(){
   const {data}=await sb.from('lucas_semana').select('*').eq('week_start',toISO(weekStart));
   schedule={};
   (data||[]).forEach(r=>{schedule[r.dia+':'+r.slot]={condutor:r.condutor,enea:r.enea,hora_override:r.hora_override};});
-  document.getElementById('week-dates').textContent=weekLbl();
+  document.getElementById('week-dates').textContent='KW '+getWeekNumber(weekStart)+' · '+weekLbl();
   document.getElementById('week-badge').textContent=isCurWeek()?t.semana_atual:t.semana;
   renderBanner();
   renderDays();
@@ -726,7 +733,7 @@ function printWeek(){
     +'<div class="page"><div style="display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #1a237e;padding-bottom:8px;margin-bottom:9px">'
     +'<div><div style="font-size:20px;font-weight:900;color:#1a237e">'+schoolName+'</div>'
     +'<div style="font-size:9px;color:#777;margin-top:2px">'+schoolAddr+'</div></div>'
-    +'<div style="font-size:15px;font-weight:800;color:#1a237e">'+weekLbl()+'</div></div>'
+    +'<div style="font-size:15px;font-weight:800;color:#1a237e">KW '+getWeekNumber(weekStart)+' · '+weekLbl()+'</div></div>'
     +'<table><thead><tr>'
     +'<th rowspan="2" style="background:#1a237e">Dia</th>'
     +'<th colspan="2" style="background:#1565c0">'+t.manha+'</th>'
