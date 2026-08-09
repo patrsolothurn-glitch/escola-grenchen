@@ -496,18 +496,27 @@ async function saveProfile(){
   const turma=document.getElementById('pf-turma').value.trim();
   const tel=document.getElementById('pf-tel').value.trim();
   const email=document.getElementById('pf-email').value.trim();
+  const btn=document.getElementById('profile-save-btn');
+  const originalText=btn.textContent;
+  btn.textContent='A guardar...';
+  btn.disabled=true;
   try{
     const {error}=await sb.rpc('update_visitante_profile', {
       p_id: me.id, p_email: email||null, p_telefone: tel||null, p_turma: turma||null
     });
     if(!error){
       me.turma=turma; me.telefone=tel; me.email=email;
-      closeProfile();
+      btn.textContent='✓ Guardado!';
+      setTimeout(()=>{ closeProfile(); btn.textContent=originalText; btn.disabled=false; }, 700);
     } else {
-      alert('Erro ao guardar: '+error.message);
+      console.error('Erro RPC:', error);
+      alert('Erro ao guardar: '+(error.message||JSON.stringify(error)));
+      btn.textContent=originalText; btn.disabled=false;
     }
   }catch(e){
-    alert('Erro ao guardar dados');
+    console.error('Erro:', e);
+    alert('Erro ao guardar dados: '+e.message);
+    btn.textContent=originalText; btn.disabled=false;
   }
 }
 
