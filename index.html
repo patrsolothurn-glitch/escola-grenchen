@@ -265,7 +265,7 @@ const T = {
       install:'App installieren für schnellen Zugriff!',
       days:['Montag','Dienstag','Mittwoch','Donnerstag','Freitag'],
       short:['Mo','Di','Mi','Do','Fr'],
-      codigo:'Zugangscode'},
+      codigo:'Zugangscode', nao_lista:'➕ Nicht in der Liste?', teu_nome:'Dein Name', pedir_acesso:'Zugang anfragen →', pedido_enviado:'✓ Anfrage gesendet!', pedido_msg:'Bitte den Administrator um deinen Zugangscode.'},
   FR:{flag:'🇫🇷',q:'Bonjour! Qui es-tu?',hint:'Choisis ton nom et entre ton code d\'accès.',
       role:'Conducteur autorisé',no_code:'L\'administrateur n\'a pas encore défini ton code.',
       wrong:'Code incorrect. Réessaie.',enter:'Entrer →',back:'← Retour',
@@ -276,7 +276,7 @@ const T = {
       install:'Installer cette app pour un accès rapide!',
       days:['Lundi','Mardi','Mercredi','Jeudi','Vendredi'],
       short:['Lu','Ma','Me','Je','Ve'],
-      codigo:'Code d\'accès'},
+      codigo:'Code d\'accès', nao_lista:'➕ Pas dans la liste?', teu_nome:'Ton nom', pedir_acesso:'Demander accès →', pedido_enviado:'✓ Demande envoyée!', pedido_msg:'Demande ton code d\'accès à l\'administrateur.'},
   IT:{flag:'🇮🇹',q:'Ciao! Chi sei?',hint:'Scegli il tuo nome e inserisci il codice di accesso.',
       role:'Conducente autorizzato',no_code:'L\'amministratore non ha ancora impostato il tuo codice.',
       wrong:'Codice errato. Riprova.',enter:'Accedi →',back:'← Torna',
@@ -287,7 +287,7 @@ const T = {
       install:'Installa questa app per accesso rapido!',
       days:['Lunedì','Martedì','Mercoledì','Giovedì','Venerdì'],
       short:['Lu','Ma','Me','Gi','Ve'],
-      codigo:'Codice di accesso'},
+      codigo:'Codice di accesso', nao_lista:'➕ Non sei nella lista?', teu_nome:'Il tuo nome', pedir_acesso:'Richiedi accesso →', pedido_enviado:'✓ Richiesta inviata!', pedido_msg:'Chiedi il codice di accesso all\'amministratore.'},
   EN:{flag:'🇬🇧',q:'Hello! Who are you?',hint:'Choose your name and enter your access code.',
       role:'Authorised driver',no_code:'The admin has not yet set your access code.',
       wrong:'Wrong code. Please try again.',enter:'Log in →',back:'← Back',
@@ -298,7 +298,7 @@ const T = {
       install:'Install this app for quick access!',
       days:['Monday','Tuesday','Wednesday','Thursday','Friday'],
       short:['Mon','Tue','Wed','Thu','Fri'],
-      codigo:'Access code'},
+      codigo:'Access code', nao_lista:'➕ Not on the list?', teu_nome:'Your name', pedir_acesso:'Request access →', pedido_enviado:'✓ Request sent!', pedido_msg:'Ask the administrator for your access code.'},
 };
 
 const DAYS_BASE=[
@@ -420,6 +420,7 @@ function showLogin(){
   document.getElementById('ll-q').textContent=t.q;
   document.getElementById('ll-hint').textContent=t.hint;
   buildLangBar('login-lang-bar');
+  updateRegisterTexts();
   const btns=document.getElementById('login-btns');
   btns.innerHTML='';
   drivers.forEach(d=>{
@@ -789,6 +790,33 @@ function appSetLang(l){
   buildFilterBar();
   renderBanner();
   renderDays();
+}
+
+function showRegisterForm(){
+  document.getElementById('register-link').style.display='none';
+  document.getElementById('register-form').style.display='block';
+  document.getElementById('register-name').focus();
+}
+
+async function submitRegister(){
+  const nome=document.getElementById('register-name').value.trim();
+  if(!nome) return;
+  try{
+    const {error}=await sb.from('lucas_visitantes').insert({nome:nome, autorizado:false, access_code:null});
+    document.getElementById('register-form').style.display='none';
+    const done=document.getElementById('register-done');
+    done.style.display='block';
+    done.innerHTML='<div class="register-done">'+t.pedido_enviado+'<br>'+t.pedido_msg+'</div>';
+  }catch(e){}
+}
+
+function updateRegisterTexts(){
+  const link=document.getElementById('register-link');
+  const inp=document.getElementById('register-name');
+  const btn=document.querySelector('.register-submit');
+  if(link) link.textContent=t.nao_lista;
+  if(inp) inp.placeholder=t.teu_nome;
+  if(btn) btn.textContent=t.pedir_acesso;
 }
 
 init();
