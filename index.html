@@ -236,7 +236,6 @@ body{padding-bottom:env(safe-area-inset-bottom)}
         <div class="header-name" id="app-name">🏫 Escola Grenchen Sek P 1p 26/27</div>
         <div class="header-addr" id="app-addr">Schulstrasse 25, 2540 Grenchen</div>
       </div>
-      <label for="my-avatar-input" class="user-avatar" id="my-avatar-preview" title="Alterar a minha foto" style="cursor:pointer">📷</label>
       <input id="my-avatar-input" type="file" accept="image/*" style="display:none">
       <button class="user-btn" id="lang-header-btn" onclick="toggleLangMenu()" style="padding:5px 8px" title="Language">🌐</button>
       <button class="user-btn" id="install-header-btn" onclick="doInstall()" style="padding:5px 8px;display:none" title="Instalar app">📲</button>
@@ -275,7 +274,10 @@ body{padding-bottom:env(safe-area-inset-bottom)}
 <div id="profile-backdrop" onclick="if(event.target===this)closeProfile()">
   <div id="profile-card">
     <button class="profile-close" onclick="closeProfile()">✕</button>
-    <div class="profile-avatar-big" id="profile-avatar">👤</div>
+    <div style="position:relative;width:72px;margin:0 auto 8px">
+      <div class="profile-avatar-big" id="profile-avatar" onclick="document.getElementById('my-avatar-input').click()" style="cursor:pointer;margin:0">👤</div>
+      <div onclick="document.getElementById('my-avatar-input').click()" style="position:absolute;bottom:-2px;right:-2px;width:24px;height:24px;border-radius:12px;background:#1a237e;display:flex;align-items:center;justify-content:center;font-size:12px;cursor:pointer;border:2px solid #fff">📷</div>
+    </div>
     <div class="profile-name" id="profile-name">—</div>
     <div class="profile-role" id="profile-role">—</div>
     <div id="profile-fields"></div>
