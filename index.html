@@ -418,8 +418,9 @@ async function init(){
   const {data:visitData}=await sb.from('lucas_visitantes').select('id,nome,access_code,autorizado').eq('autorizado',true).not('access_code','is',null).order('nome');
   visitantesAutorizados=(visitData||[]).map(v=>({id:v.id,nome:v.nome,access_code:v.access_code,autorizado:true,cor:'#7b1fa2',isVisitante:true}));
   const saved=localStorage.getItem('escola_user');
-  if(saved && drivers.find(d=>d.nome===saved)){ setUser(saved); }
-  else showLogin();
+  const savedIsValid = saved && (drivers.find(d=>d.nome===saved) || visitantesAutorizados.find(v=>v.nome===saved));
+  if(savedIsValid){ setUser(saved); }
+  else { localStorage.removeItem('escola_user'); showLogin(); }
 }
 
 // ── LOGIN ─────────────────────────────────────────────────────────
