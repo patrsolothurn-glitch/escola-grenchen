@@ -572,7 +572,14 @@ function checkCode(nome,stored){
 
 // ── APP ───────────────────────────────────────────────────────────
 function setUser(nome){
-  currentUser=nome; activeFilter=nome;
+  currentUser=nome;
+  const isDriver = drivers.some(d=>d.nome===nome);
+  const savedFilter = localStorage.getItem('escola_filter_'+nome);
+  if(savedFilter!==null){
+    activeFilter = savedFilter===''? null : savedFilter;
+  } else {
+    activeFilter = isDriver ? nome : null;
+  }
   localStorage.setItem('escola_user',nome);
   document.getElementById('login-screen').style.display='none';
   document.getElementById('code-screen').style.display='none';
