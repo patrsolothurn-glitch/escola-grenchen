@@ -368,6 +368,25 @@ let weekStart=getMonday(new Date());
 let deferredInstall=null;
 let schoolComeca='07:30', schoolAcaba='16:55';
 let visitantesAutorizados=[];
+const SCHOOL_WORD={PT:'Escola',DE:'Schule',FR:'École',IT:'Scuola',EN:'School'};
+let escolaNomeRaw='Escola Grenchen Sek P 1p 26/27';
+function translatedSchoolName(name){
+  const target=SCHOOL_WORD[lang]||SCHOOL_WORD.PT;
+  const words=Object.values(SCHOOL_WORD);
+  for(const w of words){
+    if(name.startsWith(w+' ')){
+      return target+' '+name.slice(w.length+1);
+    }
+  }
+  return name;
+}
+function renderSchoolName(){
+  const translated=translatedSchoolName(escolaNomeRaw);
+  const llEl=document.getElementById('ll-school');
+  const appEl=document.getElementById('app-name');
+  if(llEl) llEl.textContent=translated;
+  if(appEl) appEl.textContent='🏫 '+translated;
+}
 
 // ── PWA INSTALL ───────────────────────────────────────────────────
 window.addEventListener('beforeinstallprompt', e=>{
@@ -432,6 +451,7 @@ function setLang(l){
   lang=l; t=T[l]||T.PT;
   localStorage.setItem('escola_lang',l);
   document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===l));
+  renderSchoolName();
 }
 
 function buildLangBar(containerId){
@@ -525,8 +545,8 @@ async function init(){
   if(cfg){
     const m={};cfg.forEach(r=>{m[r.key]=r.value;});
     if(m.escola_nome){
-      document.getElementById('ll-school').textContent=m.escola_nome;
-      document.getElementById('app-name').textContent='🏫 '+m.escola_nome;
+      escolaNomeRaw=m.escola_nome;
+      renderSchoolName();
     }
     if(m.escola_morada){
       document.getElementById('ll-addr').textContent=m.escola_morada;
