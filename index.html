@@ -735,6 +735,11 @@ document.getElementById('my-avatar-input')?.addEventListener('change', async e=>
     if(!error){
       me.avatar_base64=b64;
       updateMyAvatarPreview();
+      // Atualizar também a foto no modal de perfil, se estiver aberto
+      const profAv=document.getElementById('profile-avatar');
+      if(profAv && document.getElementById('profile-backdrop').style.display==='flex'){
+        profAv.innerHTML='<img src="'+b64+'">';
+      }
     } else {
       alert('Erro ao guardar foto: '+error.message);
     }
