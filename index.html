@@ -304,7 +304,7 @@ const T = {
       install:'Instala esta app para acesso rápido!',
       days:['Segunda','Terça','Quarta','Quinta','Sexta'],
       short:['Seg','Ter','Qua','Qui','Sex'],
-      codigo:'Código de acesso', nao_lista:'➕ Não estás na lista?', teu_nome:'O teu nome', pedir_acesso:'Pedir acesso →', pedido_enviado:'✓ Pedido enviado!', pedido_msg:'Pede ao administrador o teu código de acesso.'},
+      codigo:'Código de acesso', nao_lista:'➕ Não estás na lista?', adicionar_visitante:'➕ Criar visitante novo', teu_nome:'O teu nome', pedir_acesso:'Pedir acesso →', pedido_enviado:'✓ Pedido enviado!', pedido_msg:'Pede ao administrador o teu código de acesso.'},
   DE:{flag:'🇩🇪',q:'Hallo! Wer bist du?',hint:'Wähle deinen Namen und gib deinen Zugangscode ein.',
       role:'Autorisierter Fahrer',no_code:'Der Administrator hat noch keinen Code festgelegt.',
       wrong:'Falscher Code. Versuche es erneut.',enter:'Einloggen →',back:'← Zurück',
@@ -315,7 +315,7 @@ const T = {
       install:'App installieren für schnellen Zugriff!',
       days:['Montag','Dienstag','Mittwoch','Donnerstag','Freitag'],
       short:['Mo','Di','Mi','Do','Fr'],
-      codigo:'Zugangscode', nao_lista:'➕ Nicht in der Liste?', teu_nome:'Dein Name', pedir_acesso:'Zugang anfragen →', pedido_enviado:'✓ Anfrage gesendet!', pedido_msg:'Bitte den Administrator um deinen Zugangscode.'},
+      codigo:'Zugangscode', nao_lista:'➕ Nicht in der Liste?', adicionar_visitante:'➕ Neuen Besucher erstellen', teu_nome:'Dein Name', pedir_acesso:'Zugang anfragen →', pedido_enviado:'✓ Anfrage gesendet!', pedido_msg:'Bitte den Administrator um deinen Zugangscode.'},
   FR:{flag:'🇫🇷',q:'Bonjour! Qui es-tu?',hint:'Choisis ton nom et entre ton code d\'accès.',
       role:'Conducteur autorisé',no_code:'L\'administrateur n\'a pas encore défini ton code.',
       wrong:'Code incorrect. Réessaie.',enter:'Entrer →',back:'← Retour',
@@ -326,7 +326,7 @@ const T = {
       install:'Installer cette app pour un accès rapide!',
       days:['Lundi','Mardi','Mercredi','Jeudi','Vendredi'],
       short:['Lu','Ma','Me','Je','Ve'],
-      codigo:'Code d\'accès', nao_lista:'➕ Pas dans la liste?', teu_nome:'Ton nom', pedir_acesso:'Demander accès →', pedido_enviado:'✓ Demande envoyée!', pedido_msg:'Demande ton code d\'accès à l\'administrateur.'},
+      codigo:'Code d\'accès', nao_lista:'➕ Pas dans la liste?', adicionar_visitante:'➕ Créer un nouveau visiteur', teu_nome:'Ton nom', pedir_acesso:'Demander accès →', pedido_enviado:'✓ Demande envoyée!', pedido_msg:'Demande ton code d\'accès à l\'administrateur.'},
   IT:{flag:'🇮🇹',q:'Ciao! Chi sei?',hint:'Scegli il tuo nome e inserisci il codice di accesso.',
       role:'Conducente autorizzato',no_code:'L\'amministratore non ha ancora impostato il tuo codice.',
       wrong:'Codice errato. Riprova.',enter:'Accedi →',back:'← Torna',
@@ -337,7 +337,7 @@ const T = {
       install:'Installa questa app per accesso rapido!',
       days:['Lunedì','Martedì','Mercoledì','Giovedì','Venerdì'],
       short:['Lu','Ma','Me','Gi','Ve'],
-      codigo:'Codice di accesso', nao_lista:'➕ Non sei nella lista?', teu_nome:'Il tuo nome', pedir_acesso:'Richiedi accesso →', pedido_enviado:'✓ Richiesta inviata!', pedido_msg:'Chiedi il codice di accesso all\'amministratore.'},
+      codigo:'Codice di accesso', nao_lista:'➕ Non sei nella lista?', adicionar_visitante:'➕ Crea nuovo visitatore', teu_nome:'Il tuo nome', pedir_acesso:'Richiedi accesso →', pedido_enviado:'✓ Richiesta inviata!', pedido_msg:'Chiedi il codice di accesso all\'amministratore.'},
   EN:{flag:'🇬🇧',q:'Hello! Who are you?',hint:'Choose your name and enter your access code.',
       role:'Authorised driver',no_code:'The admin has not yet set your access code.',
       wrong:'Wrong code. Please try again.',enter:'Log in →',back:'← Back',
@@ -348,7 +348,7 @@ const T = {
       install:'Install this app for quick access!',
       days:['Monday','Tuesday','Wednesday','Thursday','Friday'],
       short:['Mon','Tue','Wed','Thu','Fri'],
-      codigo:'Access code', nao_lista:'➕ Not on the list?', teu_nome:'Your name', pedir_acesso:'Request access →', pedido_enviado:'✓ Request sent!', pedido_msg:'Ask the administrator for your access code.'},
+      codigo:'Access code', nao_lista:'➕ Not on the list?', adicionar_visitante:'➕ Create new visitor', teu_nome:'Your name', pedir_acesso:'Request access →', pedido_enviado:'✓ Request sent!', pedido_msg:'Ask the administrator for your access code.'},
 };
 
 const DAYS_BASE=[
@@ -634,6 +634,11 @@ function showLogin(){
     if(visitantesAutorizados.length){
       visitantesAutorizados.forEach(v=>{ visitWrap.appendChild(driverBtnHtml(v, 'Visitante')); });
     }
+    const addVisitorBtn=document.createElement('button');
+    addVisitorBtn.style.cssText='width:100%;padding:12px;border:2px dashed #ce93d8;border-radius:14px;background:transparent;color:#7b1fa2;font-weight:700;font-size:13px;cursor:pointer;margin-top:2px';
+    addVisitorBtn.textContent=t.adicionar_visitante;
+    addVisitorBtn.onclick=function(){ showRegisterForm(); };
+    visitWrap.appendChild(addVisitorBtn);
   }
 
   checkPendingRegistration();
