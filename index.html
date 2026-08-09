@@ -229,7 +229,7 @@ const T = {
       manha:'🌅 Manhã',tarde:'🌤 Tarde',sem_tarde:'Sem tarde',
       leva:'Leva',busca:'Busca',todos:'Todos',
       semana_atual:'🟢 Semana atual',semana:'Semana',
-      meus_dias:'📋 Os meus dias esta semana',
+      meus_dias:'📋 Os meus dias esta semana', entra_escola:'Entra escola', sai_escola:'Sai escola',
       install:'Instala esta app para acesso rápido!',
       days:['Segunda','Terça','Quarta','Quinta','Sexta'],
       short:['Seg','Ter','Qua','Qui','Sex'],
@@ -240,7 +240,7 @@ const T = {
       manha:'🌅 Morgen',tarde:'🌤 Nachmittag',sem_tarde:'Kein Nachmittag',
       leva:'Bringen',busca:'Abholen',todos:'Alle',
       semana_atual:'🟢 Aktuelle Woche',semana:'Woche',
-      meus_dias:'📋 Meine Tage diese Woche',
+      meus_dias:'📋 Meine Tage diese Woche', entra_escola:'Schulbeginn', sai_escola:'Schulschluss',
       install:'App installieren für schnellen Zugriff!',
       days:['Montag','Dienstag','Mittwoch','Donnerstag','Freitag'],
       short:['Mo','Di','Mi','Do','Fr'],
@@ -251,7 +251,7 @@ const T = {
       manha:'🌅 Matin',tarde:'🌤 Après-midi',sem_tarde:'Pas d\'après-midi',
       leva:'Déposer',busca:'Récupérer',todos:'Tous',
       semana_atual:'🟢 Semaine actuelle',semana:'Semaine',
-      meus_dias:'📋 Mes jours cette semaine',
+      meus_dias:'📋 Mes jours cette semaine', entra_escola:'Début école', sai_escola:'Fin école',
       install:'Installer cette app pour un accès rapide!',
       days:['Lundi','Mardi','Mercredi','Jeudi','Vendredi'],
       short:['Lu','Ma','Me','Je','Ve'],
@@ -262,7 +262,7 @@ const T = {
       manha:'🌅 Mattina',tarde:'🌤 Pomeriggio',sem_tarde:'Nessun pomeriggio',
       leva:'Portare',busca:'Raccogliere',todos:'Tutti',
       semana_atual:'🟢 Settimana corrente',semana:'Settimana',
-      meus_dias:'📋 I miei giorni questa settimana',
+      meus_dias:'📋 I miei giorni questa settimana', entra_escola:'Inizio scuola', sai_escola:'Fine scuola',
       install:'Installa questa app per accesso rapido!',
       days:['Lunedì','Martedì','Mercoledì','Giovedì','Venerdì'],
       short:['Lu','Ma','Me','Gi','Ve'],
@@ -273,7 +273,7 @@ const T = {
       manha:'🌅 Morning',tarde:'🌤 Afternoon',sem_tarde:'No afternoon',
       leva:'Drop off',busca:'Pick up',todos:'All',
       semana_atual:'🟢 Current week',semana:'Week',
-      meus_dias:'📋 My days this week',
+      meus_dias:'📋 My days this week', entra_escola:'School starts', sai_escola:'School ends',
       install:'Install this app for quick access!',
       days:['Monday','Tuesday','Wednesday','Thursday','Friday'],
       short:['Mon','Tue','Wed','Thu','Fri'],
@@ -586,13 +586,13 @@ function renderDays(){
       <span class="day-date">${dayDate}</span>
     </div><div class="day-body">
       <div class="period-lbl p-manha">${t.manha}</div>
-      ${slotHtml(day,'leva_manha',t.leva,'7:05')}
-      ${slotHtml(day,'busca_almoco',t.busca,day.sai)}`;
+      ${slotHtml(day,'leva_manha',t.leva,'7:05',t.entra_escola,'7:30')}
+      ${slotHtml(day,'busca_almoco',t.busca,day.sai,t.sai_escola,day.sai)}`;
 
     if(day.tarde){
       html+=`<div class="period-lbl p-tarde" style="margin-top:10px">${t.tarde}</div>
-        ${slotHtml(day,'leva_tarde',t.leva,'13:05')}
-        ${slotHtml(day,'busca_fim',t.busca,'16:55')}`;
+        ${slotHtml(day,'leva_tarde',t.leva,'13:05',t.entra_escola,'13:30')}
+        ${slotHtml(day,'busca_fim',t.busca,'16:55',t.sai_escola,'16:55')}`;
     } else {
       html+=`<div class="no-tarde">${t.sem_tarde}</div>`;
     }
@@ -602,7 +602,7 @@ function renderDays(){
   });
 }
 
-function slotHtml(day,slot,label,defaultTime){
+function slotHtml(day,slot,label,defaultTime,subLabel,subTime){
   const sc=schedule[day.key+':'+slot]||{};
   const nome=sc.condutor;
   const col=nome?driverColor(nome):'';
@@ -610,12 +610,16 @@ function slotHtml(day,slot,label,defaultTime){
   const isOV=nome==='ÖV';
   const hora=sc.hora_override||defaultTime;
   const isEx=!!sc.hora_override;
-  return `<div class="slot-row${isMine?' mine':''}">
-    <span class="s-icon">🚗</span>
-    <span class="s-label">${label} <span class="s-time${isEx?' s-exc':''}">${hora}</span></span>
-    ${nome
-      ? `${isOV?'<span style="font-size:16px">🚌</span>':''}<span class="dpill" style="background:${col}18;color:${col}">${nome}</span>${sc.lucas_vai!==false?'<span class="epill" style="color:#1565c0;background:#e3f2fd">👦 Lucas</span>':''}${sc.enea?'<span class="epill">👦 Enea</span>':''}`
-      : '<span class="no-driver">—</span>'}
+  const subRow=subLabel?`<div style="font-size:10px;color:#aaa;margin-top:2px;padding-left:28px">${subLabel} <b style="color:#999">${subTime}</b></div>`:'';
+  return `<div class="slot-row${isMine?' mine':''}" style="flex-direction:column;align-items:stretch">
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="s-icon">🚗</span>
+      <span class="s-label">${label} <span class="s-time${isEx?' s-exc':''}">${hora}</span></span>
+      ${nome
+        ? `${isOV?'<span style="font-size:16px">🚌</span>':''}<span class="dpill" style="background:${col}18;color:${col}">${nome}</span>${sc.lucas_vai!==false?'<span class="epill" style="color:#1565c0;background:#e3f2fd">👦 Lucas</span>':''}${sc.enea?'<span class="epill">👦 Enea</span>':''}`
+        : '<span class="no-driver">—</span>'}
+    </div>
+    ${subRow}
   </div>`;
 }
 
