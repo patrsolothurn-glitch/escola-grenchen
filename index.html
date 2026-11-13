@@ -352,7 +352,8 @@ const T = {
       days:['Segunda','Terça','Quarta','Quinta','Sexta'],
       short:['Seg','Ter','Qua','Qui','Sex'],
       codigo:'Código de acesso', nao_lista:'➕ Não estás na lista?', adicionar_visitante:'➕ Criar visitante novo', ano_letivo:'Ano letivo', ver_condutores:'👥 Ver lista de condutores', ocultar_condutores:'▴ Ocultar lista de condutores', ver_visitantes:'👋 Ver lista de visitantes', ocultar_visitantes:'▴ Ocultar lista de visitantes', teu_nome:'O teu nome', pedir_acesso:'Pedir acesso →', pedido_enviado:'✓ Pedido enviado!', pedido_msg:'Pede ao administrador o teu código de acesso.',
-      net_err:'Sem ligação — não foi possível verificar o código. Tenta outra vez.', meu_codigo:'🔑 O teu código'},
+      net_err:'Sem ligação — não foi possível verificar o código. Tenta outra vez.', meu_codigo:'🔑 O teu código',
+      wrong_blocked:'Código errado ou bloqueado. Tenta daqui a 15 minutos.'},
   DE:{flag:'🇩🇪',q:'Hallo! Wer bist du?',hint:'Wähle deinen Namen und gib deinen Zugangscode ein.',
       role:'Autorisierter Fahrer',no_code:'Der Administrator hat noch keinen Code festgelegt.',
       wrong:'Falscher Code. Versuche es erneut.',enter:'Einloggen →',back:'← Zurück',
@@ -364,7 +365,8 @@ const T = {
       days:['Montag','Dienstag','Mittwoch','Donnerstag','Freitag'],
       short:['Mo','Di','Mi','Do','Fr'],
       codigo:'Zugangscode', nao_lista:'➕ Nicht in der Liste?', adicionar_visitante:'➕ Neuen Besucher erstellen', ano_letivo:'Schuljahr', ver_condutores:'👥 Fahrerliste anzeigen', ocultar_condutores:'▴ Fahrerliste ausblenden', ver_visitantes:'👋 Besucherliste anzeigen', ocultar_visitantes:'▴ Besucherliste ausblenden', teu_nome:'Dein Name', pedir_acesso:'Zugang anfragen →', pedido_enviado:'✓ Anfrage gesendet!', pedido_msg:'Bitte den Administrator um deinen Zugangscode.',
-      net_err:'Keine Verbindung — Code konnte nicht geprüft werden. Versuche es erneut.', meu_codigo:'🔑 Dein Code'},
+      net_err:'Keine Verbindung — Code konnte nicht geprüft werden. Versuche es erneut.', meu_codigo:'🔑 Dein Code',
+      wrong_blocked:'Code falsch oder gesperrt. Versuche es in 15 Minuten erneut.'},
   FR:{flag:'🇫🇷',q:'Bonjour! Qui es-tu?',hint:'Choisis ton nom et entre ton code d\'accès.',
       role:'Conducteur autorisé',no_code:'L\'administrateur n\'a pas encore défini ton code.',
       wrong:'Code incorrect. Réessaie.',enter:'Entrer →',back:'← Retour',
@@ -376,7 +378,8 @@ const T = {
       days:['Lundi','Mardi','Mercredi','Jeudi','Vendredi'],
       short:['Lu','Ma','Me','Je','Ve'],
       codigo:'Code d\'accès', nao_lista:'➕ Pas dans la liste?', adicionar_visitante:'➕ Créer un nouveau visiteur', ano_letivo:'Année scolaire', ver_condutores:'👥 Voir la liste des conducteurs', ocultar_condutores:'▴ Masquer la liste des conducteurs', ver_visitantes:'👋 Voir la liste des visiteurs', ocultar_visitantes:'▴ Masquer la liste des visiteurs', teu_nome:'Ton nom', pedir_acesso:'Demander accès →', pedido_enviado:'✓ Demande envoyée!', pedido_msg:'Demande ton code d\'accès à l\'administrateur.',
-      net_err:'Pas de connexion — impossible de vérifier le code. Réessaie.', meu_codigo:'🔑 Ton code'},
+      net_err:'Pas de connexion — impossible de vérifier le code. Réessaie.', meu_codigo:'🔑 Ton code',
+      wrong_blocked:'Code incorrect ou bloqué. Réessaie dans 15 minutes.'},
   IT:{flag:'🇮🇹',q:'Ciao! Chi sei?',hint:'Scegli il tuo nome e inserisci il codice di accesso.',
       role:'Conducente autorizzato',no_code:'L\'amministratore non ha ancora impostato il tuo codice.',
       wrong:'Codice errato. Riprova.',enter:'Accedi →',back:'← Torna',
@@ -388,7 +391,8 @@ const T = {
       days:['Lunedì','Martedì','Mercoledì','Giovedì','Venerdì'],
       short:['Lu','Ma','Me','Gi','Ve'],
       codigo:'Codice di accesso', nao_lista:'➕ Non sei nella lista?', adicionar_visitante:'➕ Crea nuovo visitatore', ano_letivo:'Anno scolastico', ver_condutores:'👥 Vedi lista conducenti', ocultar_condutores:'▴ Nascondi lista conducenti', ver_visitantes:'👋 Vedi lista visitatori', ocultar_visitantes:'▴ Nascondi lista visitatori', teu_nome:'Il tuo nome', pedir_acesso:'Richiedi accesso →', pedido_enviado:'✓ Richiesta inviata!', pedido_msg:'Chiedi il codice di accesso all\'amministratore.',
-      net_err:'Nessuna connessione — impossibile verificare il codice. Riprova.', meu_codigo:'🔑 Il tuo codice'},
+      net_err:'Nessuna connessione — impossibile verificare il codice. Riprova.', meu_codigo:'🔑 Il tuo codice',
+      wrong_blocked:'Codice errato o bloccato. Riprova tra 15 minuti.'},
   EN:{flag:'🇬🇧',q:'Hello! Who are you?',hint:'Choose your name and enter your access code.',
       role:'Authorised driver',no_code:'The admin has not yet set your access code.',
       wrong:'Wrong code. Please try again.',enter:'Log in →',back:'← Back',
@@ -400,7 +404,8 @@ const T = {
       days:['Monday','Tuesday','Wednesday','Thursday','Friday'],
       short:['Mon','Tue','Wed','Thu','Fri'],
       codigo:'Access code', nao_lista:'➕ Not on the list?', adicionar_visitante:'➕ Create new visitor', ano_letivo:'School year', ver_condutores:'👥 View drivers list', ocultar_condutores:'▴ Hide drivers list', ver_visitantes:'👋 View visitors list', ocultar_visitantes:'▴ Hide visitors list', teu_nome:'Your name', pedir_acesso:'Request access →', pedido_enviado:'✓ Request sent!', pedido_msg:'Ask the administrator for your access code.',
-      net_err:'No connection — could not verify the code. Please try again.', meu_codigo:'🔑 Your code'},
+      net_err:'No connection — could not verify the code. Please try again.', meu_codigo:'🔑 Your code',
+      wrong_blocked:'Wrong code or locked. Try again in 15 minutes.'},
 };
 
 const DAYS_BASE=[
@@ -528,7 +533,31 @@ function buildLangBar(containerId){
   });
 }
 
-// ── INIT ──────────────────────────────────────────────────────────
+// ── PERFIL ────────────────────────────────────────────────────────
+// Os contactos (email, telemóvel, turma) já não vêm no init(): só os do
+// próprio utilizador são lidos, pela RPC lucas_perfil_ler, com o código
+// que ele introduziu ao entrar. O código vive só em sessionStorage
+// (guardado em checkCode()/desbloquearPerfil()), nunca em localStorage,
+// e nunca é escrito na consola nem em mensagens de erro.
+function meuCodigoSessao(){
+  try{ return sessionStorage.getItem('escola_meu_codigo')||''; }catch(e){ return ''; }
+}
+// Texto de um erro para a consola/avisos; se por acaso contiver o código, omite o detalhe.
+function erroSemCodigo(e, codigo){
+  const m=String((e&&e.message)||e||'erro');
+  return (codigo && m.indexOf(codigo)!==-1) ? 'erro (detalhe omitido)' : m;
+}
+let perfilPedido=0;        // descarta respostas antigas (perfil fechado/reaberto, mudança de utilizador)
+let perfilCarregado=false; // só se pode gravar depois de os dados terem sido lidos
+
+function avisoPerfil(texto, erro){
+  const el=document.getElementById('pf-aviso');
+  if(!el) return;
+  el.textContent=texto||'';
+  el.style.display=texto?'block':'none';
+  el.style.color=erro?'#e53935':'#888';
+}
+
 function showProfile(){
   const me=findMe();
   if(!me) return;
@@ -544,55 +573,131 @@ function showProfile(){
   const fields=document.getElementById('profile-fields');
   const saveBtn=document.getElementById('profile-save-btn');
 
-  // O código só existe aqui na sessão do telemóvel (sessionStorage,
-  // guardado em checkCode() logo depois de entrar) — nunca vem do
-  // servidor nem fica em localStorage. Some ao fechar a app/reiniciar.
-  const meuCodigo=sessionStorage.getItem('escola_meu_codigo');
+  // O código só existe aqui na sessão do telemóvel (sessionStorage) —
+  // nunca vem do servidor nem fica em localStorage. Some ao fechar a app.
+  const meuCodigo=meuCodigoSessao();
   const codigoHtml = meuCodigo ? `
       <div class="profile-field">
         <label>${t.meu_codigo}</label>
-        <div style="font-weight:800;font-size:18px;letter-spacing:2px;color:${col}">${meuCodigo}</div>
+        <div id="pf-meu-codigo" style="font-weight:800;font-size:18px;letter-spacing:2px;color:${col}"></div>
       </div>` : '';
-
-  if(me.isVisitante){
-    fields.innerHTML = codigoHtml + `
+  const turmaHtml = me.isVisitante ? `
       <div class="profile-field">
         <label>🎓 Turma</label>
-        <input id="pf-turma" value="${me.turma||''}" placeholder="ex: SEK P-1p" />
-      </div>
+        <input id="pf-turma" placeholder="ex: SEK P-1p" autocomplete="off" disabled />
+      </div>` : '';
+
+  // Os campos começam vazios e bloqueados; só são preenchidos (e o botão de
+  // gravar só aparece) depois de lucas_perfil_ler devolver os dados do próprio.
+  fields.innerHTML = codigoHtml + `
+      <div id="pf-aviso" role="status" style="display:none;font-size:13px;font-weight:700;margin:8px 0"></div>
+      <div id="pf-desbloqueio" style="display:none;margin:8px 0">
+        <input id="pf-codigo" class="code-input" type="password" inputmode="numeric" maxlength="8" placeholder="••••" autocomplete="off" />
+        <button id="pf-codigo-btn" class="profile-save" style="display:block;margin-top:8px">🔑 ${t.enter}</button>
+      </div>` + turmaHtml + `
       <div class="profile-field">
         <label>📞 Telemóvel</label>
-        <input id="pf-tel" type="tel" value="${me.telefone||''}" placeholder="opcional" />
+        <input id="pf-tel" type="tel" placeholder="opcional" autocomplete="off" disabled />
       </div>
       <div class="profile-field">
         <label>✉️ Email</label>
-        <input id="pf-email" type="email" value="${me.email||''}" placeholder="opcional" />
+        <input id="pf-email" type="email" placeholder="opcional" autocomplete="off" disabled />
       </div>`;
-    saveBtn.style.display='block';
-  } else {
-    fields.innerHTML = codigoHtml + `
-      <div class="profile-field">
-        <label>📞 Telemóvel</label>
-        <input id="pf-tel" type="tel" value="${me.telefone||''}" placeholder="opcional" />
-      </div>
-      <div class="profile-field">
-        <label>✉️ Email</label>
-        <input id="pf-email" type="email" value="${me.email||''}" placeholder="opcional" />
-      </div>`;
-    saveBtn.style.display='block';
-  }
+  const codEl=document.getElementById('pf-meu-codigo');
+  if(codEl) codEl.textContent=meuCodigo;
+  saveBtn.style.display='none';
+  perfilCarregado=false;
 
   updateThemeButtons();
   document.getElementById('profile-backdrop').style.display='flex';
+  return carregarPerfil(me);
+}
+
+async function carregarPerfil(me){
+  const pedido=++perfilPedido;
+  const codigo=meuCodigoSessao();
+  if(!codigo){
+    // Entrou sem código nesta sessão (utilizador lembrado): pede-o aqui.
+    avisoPerfil('Para ver e alterar os teus dados, introduz o teu código de acesso.');
+    const box=document.getElementById('pf-desbloqueio');
+    const btn=document.getElementById('pf-codigo-btn');
+    const inp=document.getElementById('pf-codigo');
+    if(box) box.style.display='block';
+    if(btn) btn.onclick=()=>desbloquearPerfil();
+    if(inp) inp.onkeydown=e=>{ if(e.key==='Enter') desbloquearPerfil(); };
+    return;
+  }
+  avisoPerfil('A carregar os teus dados…');
+  let perfil;
+  try{
+    const {data,error}=await sb.rpc('lucas_perfil_ler',{p_tipo:me.tipo,p_id:me.id,p_codigo:codigo});
+    if(error) throw error;
+    perfil=data;
+  }catch(e){
+    console.error('Erro ao ler o perfil:', erroSemCodigo(e,codigo));
+    if(pedido!==perfilPedido) return;
+    avisoPerfil('Sem ligação — não foi possível ler os teus dados. Fecha e tenta outra vez.', true);
+    return;
+  }
+  if(pedido!==perfilPedido || findMe()!==me) return;
+  if(!perfil || typeof perfil!=='object'){
+    // null = código errado ou id bloqueado. O formulário fica vazio e bloqueado
+    // (sem botão de gravar): gravar um formulário vazio apagaria os contactos.
+    avisoPerfil('Não foi possível ler os teus dados. '+t.wrong_blocked, true);
+    return;
+  }
+  const telEl=document.getElementById('pf-tel');
+  const emailEl=document.getElementById('pf-email');
+  const turmaEl=document.getElementById('pf-turma');
+  if(telEl){ telEl.value=perfil.telefone||''; telEl.disabled=false; }
+  if(emailEl){ emailEl.value=perfil.email||''; emailEl.disabled=false; }
+  if(turmaEl){ turmaEl.value=perfil.turma||''; turmaEl.disabled=false; }
+  perfilCarregado=true;
+  avisoPerfil('');
+  document.getElementById('profile-save-btn').style.display='block';
+}
+
+async function desbloquearPerfil(){
+  const me=findMe();
+  const inp=document.getElementById('pf-codigo');
+  const btn=document.getElementById('pf-codigo-btn');
+  const val=inp?inp.value:'';
+  if(!me || !val) return;
+  if(btn) btn.disabled=true;
+  let ok=false;
+  try{
+    const {data,error}=await sb.rpc('lucas_entrar_seguro',{p_tipo:me.tipo,p_id:me.id,p_codigo:val});
+    if(error) throw error;
+    ok=(data===true);
+  }catch(e){
+    console.error('Erro ao verificar código:', erroSemCodigo(e,val));
+    avisoPerfil(t.net_err, true);
+    if(btn) btn.disabled=false;
+    return;
+  }
+  if(findMe()!==me) return;
+  if(ok){
+    sessionStorage.setItem('escola_meu_codigo', val);
+    return showProfile();
+  }
+  avisoPerfil(t.wrong_blocked, true);
+  if(inp){ inp.value=''; inp.focus(); }
+  if(btn) btn.disabled=false;
 }
 
 function closeProfile(){
+  perfilPedido++;
   document.getElementById('profile-backdrop').style.display='none';
 }
 
 async function saveProfile(){
   const me=findMe();
   if(!me) { closeProfile(); return; }
+  const codigo=meuCodigoSessao();
+  if(!perfilCarregado || !codigo){
+    avisoPerfil('Não foi gravado: os teus dados ainda não foram lidos.', true);
+    return;
+  }
   const telEl=document.getElementById('pf-tel');
   const emailEl=document.getElementById('pf-email');
   const turmaEl=document.getElementById('pf-turma');
@@ -604,28 +709,32 @@ async function saveProfile(){
   btn.textContent='A guardar...';
   btn.disabled=true;
   try{
-    const rpcName = me.isVisitante ? 'update_visitante_profile' : 'update_condutor_profile';
-    const params = me.isVisitante
-      ? { p_id: me.id, p_email: email||null, p_telefone: tel||null, p_turma: turma||null }
-      : { p_id: me.id, p_email: email||null, p_telefone: tel||null };
-    const {error}=await sb.rpc(rpcName, params);
-    if(!error){
-      if(me.isVisitante) me.turma=turma;
-      me.telefone=tel; me.email=email;
-      btn.textContent='✓ Guardado!';
-      setTimeout(()=>{ closeProfile(); btn.textContent=originalText; btn.disabled=false; }, 700);
-    } else {
-      console.error('Erro RPC:', error);
-      alert('Erro ao guardar: '+(error.message||JSON.stringify(error)));
+    const {data,error}=await sb.rpc('lucas_perfil_gravar',{
+      p_tipo: me.tipo, p_id: me.id, p_codigo: codigo,
+      p_email: email||null, p_telefone: tel||null,
+      p_turma: me.isVisitante ? (turma||null) : null
+    });
+    if(error) throw error;
+    if(data!==true){
+      // false = código errado ou id bloqueado: nada foi gravado.
+      avisoPerfil('Não foi gravado. '+t.wrong_blocked, true);
+      alert('Não foi gravado. '+t.wrong_blocked);
       btn.textContent=originalText; btn.disabled=false;
+      return;
     }
+    avisoPerfil('');
+    btn.textContent='✓ Guardado!';
+    setTimeout(()=>{ closeProfile(); btn.textContent=originalText; btn.disabled=false; }, 700);
   }catch(e){
-    console.error('Erro:', e);
-    alert('Erro ao guardar dados: '+e.message);
+    const msg=erroSemCodigo(e,codigo);
+    console.error('Erro ao guardar o perfil:', msg);
+    avisoPerfil('Erro ao guardar: '+msg, true);
+    alert('Erro ao guardar: '+msg);
     btn.textContent=originalText; btn.disabled=false;
   }
 }
 
+// ── INIT ──────────────────────────────────────────────────────────
 async function init(){
   const {data:cfg}=await sb.from('lucas_config').select('*');
   if(cfg){
@@ -641,10 +750,10 @@ async function init(){
     if(m.escola_comeca) schoolComeca=m.escola_comeca;
     if(m.escola_acaba) schoolAcaba=m.escola_acaba;
   }
-  const {data}=await sb.from('lucas_condutores').select('id,nome,cor,autorizado,tem_codigo,avatar_base64,telefone,email').eq('autorizado',true).order('nome');
+  const {data}=await sb.from('lucas_condutores').select('id,nome,cor,autorizado,tem_codigo,avatar_base64').eq('autorizado',true).order('nome');
   drivers=(data||[]).map(d=>({...d, tipo:'condutor'}));
-  const {data:visitData}=await sb.from('lucas_visitantes').select('id,nome,tem_codigo,autorizado,avatar_base64,email,telefone,turma').eq('autorizado',true).order('nome');
-  visitantesAutorizados=(visitData||[]).map(v=>({id:v.id,nome:v.nome,tem_codigo:v.tem_codigo,tipo:'visitante',autorizado:true,cor:'#7b1fa2',isVisitante:true,avatar_base64:v.avatar_base64,email:v.email,telefone:v.telefone,turma:v.turma}));
+  const {data:visitData}=await sb.from('lucas_visitantes').select('id,nome,tem_codigo,autorizado,avatar_base64').eq('autorizado',true).order('nome');
+  visitantesAutorizados=(visitData||[]).map(v=>({id:v.id,nome:v.nome,tem_codigo:v.tem_codigo,tipo:'visitante',autorizado:true,cor:'#7b1fa2',isVisitante:true,avatar_base64:v.avatar_base64}));
   const saved=localStorage.getItem('escola_user');
   const savedIsValid = saved && (drivers.find(d=>d.nome===saved) || visitantesAutorizados.find(v=>v.nome===saved));
   if(savedIsValid){ setUser(saved); }
@@ -755,11 +864,11 @@ function showLogin(){
 
 // ── CODE ──────────────────────────────────────────────────────────
 // O código nunca é lido do servidor (init() já não pede access_code).
-// A verificação é sempre feita no servidor pela RPC lucas_entrar —
-// esta página só sabe se a pessoa TEM código (d.tem_codigo), nunca o
-// valor. Ver a descrição do PR para o SQL da função lucas_entrar e
-// dos GRANTs (função SECURITY DEFINER, corre no servidor com a
-// service key do próprio Postgres, não com a anon key desta página).
+// A verificação é sempre feita no servidor pela RPC lucas_entrar_seguro
+// (devolve false se o código estiver errado ou o id estiver bloqueado:
+// 5 falhas = 15 minutos) — esta página só sabe se a pessoa TEM código
+// (d.tem_codigo), nunca o valor. O código introduzido nunca é escrito
+// na consola nem em mensagens de erro.
 function showCode(d){
   document.getElementById('login-screen').style.display='none';
   document.getElementById('code-screen').style.display='block';
@@ -793,11 +902,11 @@ async function checkCode(d){
   if(btnEl){ btnEl.disabled=true; }
   let resultado;
   try{
-    const {data,error}=await sb.rpc('lucas_entrar',{p_tipo:d.tipo,p_id:d.id,p_codigo:val});
+    const {data,error}=await sb.rpc('lucas_entrar_seguro',{p_tipo:d.tipo,p_id:d.id,p_codigo:val});
     if(error) throw error;
     resultado=data;
   }catch(e){
-    console.error('Erro ao verificar código:', e);
+    console.error('Erro ao verificar código:', erroSemCodigo(e,val));
     errEl.textContent=t.net_err;
     if(btnEl){ btnEl.disabled=false; }
     return; // erro de rede/servidor: nunca deixa entrar
@@ -807,7 +916,8 @@ async function checkCode(d){
     setUser(d.nome);
     return;
   }
-  errEl.textContent=t.wrong;
+  // false = código errado OU id bloqueado (o servidor não distingue).
+  errEl.textContent=t.wrong_blocked;
   if(inpEl){ inpEl.value=''; inpEl.focus(); }
   if(btnEl){ btnEl.disabled=false; }
 }
@@ -889,11 +999,23 @@ document.getElementById('my-avatar-input')?.addEventListener('change', async e=>
   if(!file || !currentUser) return;
   const me=findMe();
   if(!me) return;
-  const rpcName = me.isVisitante ? 'update_visitante_avatar' : 'update_lucas_avatar';
+  const codigo=meuCodigoSessao();
+  if(!codigo){
+    alert('Para mudar a foto, abre o teu perfil e introduz o teu código de acesso.');
+    e.target.value='';
+    return;
+  }
   try{
     const b64=await resizeImageFile(file,200);
-    const {error}=await sb.rpc(rpcName,{p_id:me.id, p_avatar:b64});
-    if(!error){
+    const {data,error}=await sb.rpc('lucas_avatar_gravar',{p_tipo:me.tipo, p_id:me.id, p_codigo:codigo, p_avatar:b64});
+    if(error){
+      const msg=erroSemCodigo(error,codigo);
+      console.error('Erro ao guardar a foto:', msg);
+      alert('Erro ao guardar foto: '+msg);
+    } else if(data!==true){
+      // false = código errado ou id bloqueado: a foto não foi gravada.
+      alert('A foto não foi gravada. '+t.wrong_blocked);
+    } else {
       me.avatar_base64=b64;
       updateMyAvatarPreview();
       renderUserBtn();
@@ -902,8 +1024,6 @@ document.getElementById('my-avatar-input')?.addEventListener('change', async e=>
       if(profAv && document.getElementById('profile-backdrop').style.display==='flex'){
         profAv.innerHTML='<img src="'+b64+'">';
       }
-    } else {
-      alert('Erro ao guardar foto: '+error.message);
     }
   }catch(err){
     alert('Erro ao processar imagem');
@@ -1289,7 +1409,42 @@ function doExit(){
   }, 200);
 }
 
+// ── Nova versão publicada ────────────────────────────────────────
+// Esta página não tem service worker: quem a serve é a cache HTTP normal.
+// Uma app instalada pode ficar aberta dias com o código antigo em memória.
+// Ao voltar à app (no máximo de 5 em 5 minutos) pede-se o index.html sem
+// cache e compara-se a versão; se for outra, aparece um botão para atualizar.
+// Nunca recarrega sozinha (não se perde o que se estiver a escrever).
+// MUDAR APP_VERSAO em cada publicação.
+const APP_VERSAO='2026-11-12';
+let ultimaVerificacaoVersao=0;
+function mostrarBarraVersao(){
+  if(document.getElementById('nova-versao-bar')) return;
+  const b=document.createElement('button');
+  b.id='nova-versao-bar';
+  b.type='button';
+  b.textContent='🔄 Nova versão — tocar para atualizar · Neue Version — aktualisieren';
+  b.style.cssText='position:fixed;left:10px;right:10px;bottom:10px;z-index:99999;padding:12px;border:none;border-radius:12px;background:#1a237e;color:#fff;font-weight:700;font-size:13px;box-shadow:0 4px 16px rgba(0,0,0,.3);cursor:pointer';
+  b.onclick=()=>{ location.replace(location.pathname+'?v='+Date.now()); };
+  document.body.appendChild(b);
+}
+async function verificarVersao(){
+  const agora=Date.now();
+  if(agora-ultimaVerificacaoVersao<5*60*1000) return;
+  ultimaVerificacaoVersao=agora;
+  try{
+    const r=await fetch(location.pathname+'?v='+agora,{cache:'no-store'});
+    if(!r.ok) return;
+    const m=/const APP_VERSAO='([^']+)'/.exec(await r.text());
+    if(m && m[1]!==APP_VERSAO) mostrarBarraVersao();
+  }catch(e){
+    console.warn('Não foi possível verificar se há versão nova:', (e && e.message) || 'erro');
+  }
+}
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible') verificarVersao(); });
+
 init();
+verificarVersao();
 </script>
 </body>
 </html>
